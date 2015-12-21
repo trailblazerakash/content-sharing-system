@@ -1,0 +1,139 @@
+.tdd{
+	FONT-SIZE: 12px;
+	COLOR: #000000;
+	border-bottom-width: thin;
+	border-bottom-style: dotted;
+	border-bottom-color: #999999;
+}
+.redline {
+	BORDER-RIGHT: #e92f35 1px solid; BORDER-TOP: #e92f35 1px solid; BORDER-LEFT: #e92f35 1px solid; BORDER-BOTTOM: #e92f35 1px solid
+}
+.white {
+	FONT-SIZE: 12px;COLOR: #ffffff
+}
+A:link {
+	FONT-SIZE: 12px;COLOR: #333333; TEXT-DECORATION: none
+}
+A:visited {
+	FONT-SIZE: 12px;COLOR: #333333; TEXT-DECORATION: none
+}
+A:hover {
+	FONT-SIZE: 12px;COLOR: #0684D9; TEXT-DECORATION: underline
+}
+INPUT {
+	FONT-SIZE: 12px; COLOR: #000000
+}
+.big {
+	FONT-SIZE: 14px
+}
+.contant {
+	FONT-SIZE: 12px; COLOR: #000000; LINE-HEIGHT: 18px
+}
+.style100{
+    FONT-SIZE: 12px; filter:shadow=45;}
+A.newmenu {
+	FONT-SIZE: 12px;COLOR: #ffffff;
+	FILTER: Shadow(color=#000000,direction=135,strength=1); COLOR: #fff
+}
+A.newmenu:visited {
+	FONT-SIZE: 12px;COLOR: #ffffff;
+	FILTER: Shadow(color=#000000,direction=135,strength=1); COLOR: #fff
+}
+A.newmenu:hover {
+	FONT-SIZE: 12px;COLOR: #ff6600
+}
+A.newmenu:active {
+	FONT-SIZE: 12px;COLOR: #ff6600
+}
+.style11 {
+	font-size: 13px;
+	font-style: normal;
+	font-weight: bold;
+	color:#003366;
+	position: relative;
+}
+.style6 {
+	FONT-SIZE: 12px;color: #FF0000;
+	text-decoration: blink;
+}
+.login-text {color: #333333;font-size:9px;}
+A.b {
+	FONT-SIZE: 12px;COLOR: #003366;
+	FILTER: Shadow(color=#000000,direction=135,strength=1);
+}
+A.b:visited {
+	FONT-SIZE: 12px;COLOR: #003366;
+	FILTER: Shadow(color=#000000,direction=135,strength=1);
+}
+A.b:hover {
+	FONT-SIZE: 12px;COLOR: #ff6600
+}
+A.b:active {
+	FONT-SIZE: 12px;COLOR: #ff6600
+}
+BODY { color:#666666;font-size:12px;	margin-top: 0px;margin-left: 7px;margin-right: 7px;
+	margin-bottom: 0px;}
+}
+.style1{font-size:12px;
+        color:#333333;}
+A:link {
+	COLOR: #003366; TEXT-DECORATION: none
+}
+INPUT {
+	FONT: 12px Verdana,Geneva,sans-serif,宋体
+}
+SELECT {
+	FONT: 12px Verdana,Geneva,sans-serif,宋体
+}
+DIV {
+	FONT: 12px Verdana,Geneva,sans-serif,宋体
+}
+FORM {
+	FONT: 12px Verdana,Geneva,sans-serif,宋体
+}
+P {
+	FONT: 12px Verdana,Geneva,sans-serif,宋体
+}
+TD {
+	FONT: 12px Verdana,Geneva,sans-serif,宋体
+}
+BODY {
+	FONT: 12px Verdana,Geneva,sans-serif,宋体; SCROLLBAR-HIGHLIGHT-COLOR: buttonface; SCROLLBAR-SHADOW-COLOR: buttonface; SCROLLBAR-3DLIGHT-COLOR: buttonhighlight; SCROLLBAR-TRACK-COLOR: #eeeeee; SCROLLBAR-DARKSHADOW-COLOR: buttonshadow
+}
+.a1 {
+	BACKGROUND-COLOR: #afc6db
+}
+.a2 {
+	BACKGROUND-COLOR: #9ccbde
+}
+.a3 {
+	BACKGROUND-COLOR: #ffffff
+}
+.a4 {
+	BACKGROUND-COLOR: #f8f8f8
+}
+.5 {
+	BACKGROUND-COLOR: #eeeecc
+}
+.6 {
+	BACKGROUND-COLOR: #ffffff
+}
+
+.STYLE101 {
+	font-size: 36px;
+	font-weight: bold;
+}
+.STYLE102 {color: #86A710}
+.STYLE103 {
+	font-size: 18px;
+	font-family: Arial, Helvetica, sans-serif;
+	line-height:26px;
+}
+.STYLE104 {
+	color: #86A710;
+	font-size: 24px;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+}
+.STYLE106 {color: #86A710; font-weight: bold; }
+.tab{border-color:#999999;border-width:1px;border:dashed; width:740px;}

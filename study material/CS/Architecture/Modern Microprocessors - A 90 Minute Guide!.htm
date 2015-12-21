@@ -1,0 +1,1502 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0059)http://www.pattosoft.com.au/Articles/ModernMicroprocessors/ -->
+<HTML><HEAD><TITLE></TITLE>
+<META http-equiv=content-type content=text/html;charset=ISO-8859-1>
+<META content="MSHTML 6.00.2900.2523" name=GENERATOR><LINK media=screen 
+href="Modern Microprocessors - A 90 Minute Guide!_files/Styles.css" 
+rel=stylesheet></HEAD>
+<BODY text=black alink=black vlink=black link=black bgColor=white 
+leftMargin=0 topMargin=0 marginwidth="0" marginheight="0">
+<TABLE height=30 cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD>- <A href="http://www.pattosoft.com.au/index.html">PattoSoft</A> -</TD>
+    <TD align=right>- <A 
+      href="http://www.pattosoft.com.au/index.html">Home</A> | <A 
+      href="http://www.pattosoft.com.au/Software/index.html">Software</A> | <A 
+      href="http://www.pattosoft.com.au/Articles/index.html">Articles</A> | <A 
+      href="http://www.pattosoft.com.au/About/index.html">About</A> | <A 
+      href="http://www.pattosoft.com.au/Search/index.html">Search</A> | <A 
+      href="http://www.pattosoft.com.au/Help/index.html">Help</A> 
+-</TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle colSpan=3>
+      <TABLE cellSpacing=0 cellPadding=3 border=0>
+        <TBODY>
+        <TR>
+          <TD noWrap align=middle width="90%" rowSpan=2>
+            <P><BR></P>
+            <H1><FONT size=6>Modern Microprocessors</FONT><BR>A 90 Minute 
+            Guide!</H1>
+            <P>by <A href="http://www.pattosoft.com.au/jason/index.html">Jason 
+            Patterson</A></P>
+            <P>Last Updated: Sept 5, 2003 (Revision 4.0)<BR><BR></P>
+            <TABLE cellSpacing=0 cellPadding=0 align=center border=0>
+              <TBODY>
+              <TR>
+                <TD noWrap><I><FONT face=Arial,Helvetica>Today's robots are 
+                  very primitive, capable of understanding only a few<BR>simple 
+                  instructions such as 'go left', 'go right' and 'build 
+                  car'.</FONT></I></TD></TR>
+              <TR>
+                <TD noWrap align=right><BR><FONT size=1>– John 
+              Sladek</FONT></TD></TR></TBODY></TABLE>
+            <P><BR></P></TD>
+          <TD vAlign=bottom noWrap><SPAN class=b>Jump To 
+        Section...</SPAN></TD></TR>
+        <TR>
+          <TD vAlign=top noWrap><FONT size=1><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#MHz">More 
+            Than Just Megahertz</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Pipelining">Pipelining 
+            &amp; Instruction-Level Parallelism</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Superpipelining">Deeper 
+            Pipelines - Superpipelining</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Superscalar">Multiple 
+            Issue - Superscalar</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#VLIW">Explicit 
+            Parallelism - VLIW &amp; EPIC</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Latencies">Instruction 
+            Dependencies &amp; Latencies</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Branches">Branches 
+            &amp; Branch Prediction</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Predication">Eliminating 
+            Branches with Predication</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Scheduling">Scheduling, 
+            Register Renaming &amp; OOO</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Brainiac">The 
+            Brainiac Debate</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#x86">What 
+            About x86?</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#SMT">Threads 
+            - SMT, Hyper-Threading &amp; Multi-core</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#SIMD">Data 
+            Parallelism - SIMD Vector Instructions</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Caches">Caches 
+            &amp; The Memory Hierarchy</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Associativity">Cache 
+            Conflicts &amp; Associativity</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Memory">Memory 
+            Bandwidth vs Latency</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#Acknowledgements">Acknowledgements</A><BR><A 
+            href="http://www.pattosoft.com.au/Articles/ModernMicroprocessors/#MoreInfo">More 
+            Detailed Information?</A></FONT></TD></TR></TBODY></TABLE></TD></TR>
+  <TR height=1>
+    <TD width="10%" height=1></TD>
+    <TD width="80%" height=1></TD>
+    <TD width="10%" height=1></TD></TR>
+  <TR>
+    <TD width="10%"></TD>
+    <TD width="80%">
+      <P>WARNING: This article is meant to be informal and fun!</P>
+      <P>Okay, so you're a CS graduate and you did a hardware/assembly course as 
+      part of your degree, but perhaps that was a few years ago now and you 
+      haven't really kept up with the details of processor designs since 
+      then.</P>
+      <P>In particular, you might not be aware of some key topics that developed 
+      rapidly in the past decade...</P>
+      <UL>
+        <LI>pipelining (superscalar, OOO, VLIW, branch prediction, predication) 
+        <LI>simultaneous multithreading (SMT, Hyper-Threading, multi-core) 
+        <LI>SIMD vector instructions (VIS, MMX/SSE, AltiVec) 
+        <LI>caches and the memory hierarchy </LI></UL>
+      <P>Fear not! This article will get you up to speed fast. In no time you'll 
+      be discussing the finer points of superscalar-vs-VLIW, the brainiac debate 
+      and its relationship to IA64 and Itanium.</P>
+      <P>But be prepared – this article is brief and to-the-point. It pulls no 
+      punches and the pace is pretty fierce (really). Let's get into it...</P>
+      <H2><A name=MHz></A>More Than Just Megahertz</H2>
+      <P>The first issue that must be cleared up is the difference between clock 
+      speed and a processor's performance. <SPAN class=b>They are not the same 
+      thing</SPAN>. Look at the results for processors of the recent past...</P>
+      <TABLE cellSpacing=0 cellPadding=2 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=right></TD>
+          <TD></TD>
+          <TD align=middle><I>SPECint95</I></TD>
+          <TD align=middle><I>SPECfp95</I></TD></TR>
+        <TR bgColor=#14143d>
+          <TD align=right>195 MHz</TD>
+          <TD>MIPS R10000</TD>
+          <TD align=middle>11.0</TD>
+          <TD align=middle>17.0</TD></TR>
+        <TR>
+          <TD align=right>400 MHz</TD>
+          <TD>Alpha 21164</TD>
+          <TD align=middle>12.3</TD>
+          <TD align=middle>17.2</TD></TR>
+        <TR bgColor=#14143d>
+          <TD align=right>300 MHz</TD>
+          <TD>UltraSPARC</TD>
+          <TD align=middle>12.1</TD>
+          <TD align=middle>15.5</TD></TR>
+        <TR>
+          <TD align=right>300 MHz</TD>
+          <TD>Pentium-II</TD>
+          <TD align=middle>11.6</TD>
+          <TD align=middle>8.8</TD></TR>
+        <TR bgColor=#14143d>
+          <TD align=right>300 MHz</TD>
+          <TD>PowerPC G3</TD>
+          <TD align=middle>14.8</TD>
+          <TD align=middle>11.4</TD></TR>
+        <TR>
+          <TD align=right>135 MHz</TD>
+          <TD>POWER2</TD>
+          <TD align=middle>6.2</TD>
+          <TD align=middle>17.6</TD></TR></TBODY></TABLE>
+      <P>A 200 MHz MIPS R10000, a 300 MHz UltraSPARC and a 400 MHz Alpha 21164 
+      are all about the same speed at running most programs, yet they differ by 
+      a factor of two in clock speed. A 300 MHz Pentium-II is also about the 
+      same speed for many things, yet it's about half that speed for 
+      floating-point code such as scientific number crunching. A PowerPC G3 at 
+      that same 300 MHz is somewhat faster than the others for integer code, but 
+      still far slower than the top 3 for floating-point. At the other extreme, 
+      an IBM POWER2 processor at just 135 MHz matches the 400 MHz Alpha 21164 in 
+      floating-point speed, yet it's only half as fast for normal integer 
+      programs.</P>
+      <P>How can this be? Obviously, there's more to it than just clock speed – 
+      it's all about how much work gets done in each clock cycle. Which leads 
+      to...</P>
+      <H2><A name=Pipelining></A>Pipelining &amp; Instruction-Level 
+      Parallelism</H2>
+      <P>Instructions are executed one after the other inside the processor, 
+      right? Well, that makes it easy to understand, but that's not really what 
+      happens. In fact, that hasn't happened since the middle of the 1980's. 
+      Instead, several instructions are all <SPAN class=b>partially 
+      executing</SPAN> at the same time.</P>
+      <P>Consider how an instruction is executed – first it is fetched, then 
+      decoded, then executed by the appropriate functional unit, and finally the 
+      result is written into place. With this scheme, a simple processor might 
+      take 4 cycles per instruction (CPI = 4)...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=144 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/Sequential.gif" 
+            width=385 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>The instruction flow of a sequential 
+            processor.</I></TD></TR></TBODY></TABLE>
+      <P>Modern processors overlap these stages in a <SPAN 
+      class=b>pipeline</SPAN>, like an assembly line. While one instruction is 
+      executing, the next instruction is being decoded, and the one after that 
+      is being fetched...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=144 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/Pipelined.gif" 
+            width=385 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>The instruction flow of a pipelined 
+            processor.</I></TD></TR></TBODY></TABLE>
+      <P>Now the processor is completing 1 instruction every cycle (CPI = 1). 
+      This is a four-fold speedup without changing the clock speed at all. Not 
+      bad, huh?</P>
+      <P>From the hardware point of view, each pipeline stage consists of some 
+      combinatorial logic and possibly access to a register set and/or some form 
+      of high speed cache memory. The pipeline stages are separated by latches. 
+      A common clock signal synchronizes the latches between each stage, so that 
+      all the latches capture the results produced by the pipeline stages at the 
+      same time. In effect, the clock "pumps" instructions down the 
+pipeline.</P>
+      <P>At the beginning of each clock cycle, the data and control information 
+      for a partially processed instruction is held in a pipeline latch, and 
+      this information forms the inputs to the logic circuits of the next 
+      pipeline stage. During the clock cycle, the signals propagate through the 
+      combinatorial logic of the stage, producing an output just in time to be 
+      captured by the next pipeline latch at the end of the clock cycle...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=96 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/PipelinedMicroarch.gif" 
+            width=380 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>A pipelined 
+      microarchitecture.</I></TD></TR></TBODY></TABLE>
+      <P>Since the result from each instruction is available after the execute 
+      stage has completed, the next instruction ought to be able to use that 
+      value immediately, rather than waiting for that result to be committed to 
+      its destination register in the writeback stage. To allow this, forwarding 
+      lines called <SPAN class=b>bypasses</SPAN> are added, going backwards 
+      along the pipeline...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle width=23></TD>
+          <TD align=middle><IMG height=84 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/PipelinedBypasses.gif" 
+            width=335 border=0></TD></TR>
+        <TR>
+          <TD align=middle colSpan=2><I>A pipelined microarchitecture with 
+            bypasses.</I></TD></TR></TBODY></TABLE>
+      <P>Although the pipeline stages look simple, it is important to remember 
+      that the <SPAN class=b>execute</SPAN> stage in particular is really made 
+      up of several different groups of logic (several sets of gates), making up 
+      different <SPAN class=b>functional units</SPAN> for each type of operation 
+      that the processor must be able to perform...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=92 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/PipelinedFunctionalUnits.gif" 
+            width=390 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>A pipelined microarchitecture in more 
+          detail.</I></TD></TR></TBODY></TABLE>
+      <P>The early RISC processors, such as IBM's 801 research prototype, the 
+      MIPS R2000 (based on the Stanford MIPS machine) and the original SPARC 
+      (derived from the Berkeley RISC project), all implemented a simple 5 stage 
+      pipeline not unlike the one shown above (the extra stage is for memory 
+      access, placed after execute). At the same time, the mainstream 80386, 
+      68030 and VAX processors worked sequentially using microcode (it's easier 
+      to pipeline a RISC because the instructions are all simple 
+      register-to-register operations, unlike x86, 68k or VAX). As a result, a 
+      SPARC running at 20 MHz was way faster than a 386 running at 33 MHz. Every 
+      processor since then has been pipelined, at least to some extent. A good 
+      summary of the original RISC research projects can be found in this <A 
+      href="http://portal.acm.org/citation.cfm?id=214917&amp;coll=portal&amp;dl=ACM&amp;CFID=11975634&amp;CFTOKEN=58250893">1985 
+      CACM research paper</A> by David Patterson.</P>
+      <H2><A name=Superpipelining></A>Deeper Pipelines - Superpipelining</H2>
+      <P>Since the clock speed is limited by (among other things) the length of 
+      the longest stage in the pipeline, the logic gates that make up each stage 
+      can be <SPAN class=b>subdivided</SPAN>, especially the longer ones, 
+      converting the pipeline into a deeper super-pipeline with a larger number 
+      of shorter stages. Then the whole processor can be run at a <SPAN 
+      class=b>higher clock speed!</SPAN> Of course, each instruction will now 
+      take more cycles to complete (latency), but the processor will still be 
+      completing 1 instruction per cycle (throughput), and there will be more 
+      cycles per second, so the processor will complete more instructions per 
+      second (actual performance)...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=144 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/Superpipelined.gif" 
+            width=385 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>The instruction flow of a superpipelined 
+            processor.</I></TD></TR></TBODY></TABLE>
+      <P>The Alpha architects in particular liked this idea, which is why the 
+      early Alpha's had very deep pipelines and ran at such very high clock 
+      speeds for their era. The MIPS R4000 series was also superpipelined (in 
+      fact the R4000 was only superpipelined and not superscalar, see 
+below).</P>
+      <P>Today, most processors strive to keep the number of levels of logic 
+      down to just a handful for each pipeline stage (about 10-20 levels), and 
+      most have quite deep pipelines (4-7 in PowerPC G3/G4, 5-7 in MIPS R10000, 
+      7-9 in Alpha 21164, 7-12 in PowerPC G4e, 8-10 in Itanium-II, 9 in 
+      UltraSPARC, 10-15 in Athlon, 12+ in Pentium-Pro/II/III, 14 in 
+      UltraSPARC-III, 16-25 in PowerPC G5, 20+ in Pentium-4). The x86 processors 
+      generally have deeper pipelines than the RISC's because they need to do 
+      extra work to decode the x86 instructions (more on this later).</P>
+      <H2><A name=Superscalar></A>Multiple Issue - Superscalar</H2>
+      <P>Since the execute stage of the pipeline is really a bunch of different 
+      <SPAN class=b>functional units</SPAN>, each doing its own task, it seems 
+      tempting to try to execute multiple instructions <SPAN class=b>in 
+      parallel</SPAN>, each in its own functional unit. To do this, the fetch 
+      and decode/dispatch stages must be enhanced so that they can decode 
+      multiple instructions in parallel and send them out to the "execution 
+      resources"...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=335 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/SuperscalarMicroarch.gif" 
+            width=437 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>A superscalar 
+        microarchitecture.</I></TD></TR></TBODY></TABLE>
+      <P>Of course, now that there are independent pipelines for each functional 
+      unit, they can even be different lengths. This allows the simpler 
+      instructions to complete more quickly, reducing <SPAN 
+      class=b>latency</SPAN> (which we'll get to soon). There are also a bunch 
+      of bypasses within and between the various pipelines, but these have been 
+      left out for simplicity.</P>
+      <P>In the above example, the processor could potentially execute 3 
+      different instructions per cycle – for example one integer, one 
+      floating-point and one memory operation. Even more functional units could 
+      be added, so that the processor might be able to execute two integer 
+      instructions per cycle, or two floating-point instructions, or whatever 
+      the target applications could best use.</P>
+      <P>On a superscalar processor, the instruction flow looks something 
+      like...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=144 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/Superscalar.gif" 
+            width=385 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>The instruction flow of a superscalar 
+            processor.</I></TD></TR></TBODY></TABLE>
+      <P>This is great! There are now 3 instructions completing every cycle (CPI 
+      = 0.33, or IPC = 3). The number of instructions able to be issued or 
+      completed per cycle is called a processor's <SPAN 
+class=b>width</SPAN>.</P>
+      <P>Note that the issue-width is less than the number of functional units – 
+      this is typical. There must be more functional units because different 
+      code sequences have different mixes of instructions. The idea is to 
+      execute 3 instructions per cycle, but those instructions are not always 
+      going to be 1 integer, 1 floating-point and 1 memory operation, so more 
+      than 3 functional units are required.</P>
+      <P>The IBM POWER1 processor, the predecessor of PowerPC, was the first 
+      mainstream superscalar processor. Most of the RISC's went superscalar soon 
+      after (SuperSPARC, Alpha 21064). Intel even managed to build a superscalar 
+      x86 – the original Pentium – however the complex x86 instruction set was a 
+      real problem for them (more on this later).</P>
+      <P>Of course, there's nothing stopping a processor from having both a deep 
+      pipeline and multiple instruction issue, so it can be both superpipelined 
+      and superscalar at the same time...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=144 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/SuperpipelinedSuperscalar.gif" 
+            width=385 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>The instruction flow of a 
+            superpipelined-superscalar processor.</I></TD></TR></TBODY></TABLE>
+      <P>Today, virtually every processor is a superpipelined-superscalar, so 
+      they're just called superscalar for short. Strictly speaking, 
+      superpipelining is just pipelining with a deeper pipe anyway.</P>
+      <P>The issue-widths of current processors range from 2-issue (MIPS R5000) 
+      to 3-issue (PowerPC G3/G4, Pentium-Pro/II/III/M, Athlon, Pentium-4 (well, 
+      sort-of)) or 4-issue (UltraSPARC, MIPS R10000, Alpha 21164 &amp; 21264, 
+      PowerPC G4e) or 5-issue (PowerPC G5), or even 6-issue (Itanium-I/II, but 
+      it's a VLIW – see below). The exact number and type of functional units in 
+      each processor depends on its target market. Some processors have more 
+      floating-point execution resources (MIPS R8000, IBM's POWER line, 
+      Athlon<FONT size=1><SUP>1</SUP></FONT>), others are more integer-biased 
+      (Pentium-Pro/II/III/M, PowerPC G3), some devote much of their resources 
+      towards SIMD vector instructions (PowerPC G4 &amp; G4e), and many take the 
+      middle ground (UltraSPARC, MIPS R10000, Alpha 21164 &amp; 21264, 
+      Pentium-4, Itanium-I/II, PowerPC G5).</P>
+      <TABLE cellSpacing=0 cellPadding=3 width="80%" align=right border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><FONT size=1><SUP>1</SUP></FONT></TD>
+          <TD><FONT size=1>Unfortunately, exploiting the Athlon's aggressive 
+            floating-point resources is difficult from the standard x86 
+            instruction set.</FONT></TD></TR></TBODY></TABLE>
+      <H2><BR clear=all><BR><A name=VLIW></A>Explicit Parallelism - VLIW &amp; 
+      EPIC</H2>
+      <P>In cases where backward compatibility is not an issue, it is possible 
+      for the <SPAN class=b>instruction set</SPAN> itself to be designed to 
+      <SPAN class=b>explicitly</SPAN> group instructions to be executed in 
+      parallel. This approach eliminates the need for complex dependency 
+      checking logic in the dispatch stage, which should make the processor 
+      easier to design (and easier to ramp up the clock speed over time, at 
+      least in theory).</P>
+      <P>In this style of processor, the "instructions" are really <SPAN 
+      class=b>groups</SPAN> of little sub-instructions, and thus the 
+      instructions themselves are very long (often 128 bits or more), hence the 
+      name VLIW – <SPAN class=b>very long instruction word</SPAN>. Each 
+      instruction contains information for multiple parallel operations.</P>
+      <P>A VLIW processor's instruction flow is much like a superscalar, except 
+      that the decode/dispatch stage is much simpler and only occurs for each 
+      group of sub-instructions...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=144 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/VLIW.gif" 
+            width=385 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>The instruction flow of a VLIW 
+        processor.</I></TD></TR></TBODY></TABLE>
+      <P>Other than the simplification of the dispatch logic, VLIW processors 
+      are much like superscalar processors. This is especially so from a 
+      compiler's point of view (more on this later).</P>
+      <P>It is worth noting, however, that most VLIW designs are <SPAN 
+      class=b>not interlocked</SPAN>. This means they do not check for 
+      dependencies between instructions, and often have no way of stalling 
+      instructions other than to stall the whole processor on a cache miss. As a 
+      result, the compiler needs to insert the appropriate number of cycles 
+      between dependent instructions, even if there are no instructions to fill 
+      the gap, by using <SPAN class=b>nops</SPAN> (no-operations) if necessary. 
+      This complicates the compiler somewhat, because it is doing something that 
+      a superscalar processor normally does at runtime, however the extra code 
+      in the compiler is minimal and it saves precious resources on the 
+      processor chip.</P>
+      <P>No VLIW designs have yet been commercially successful, however Intel's 
+      IA64 architecture, which is now in production in the form of the 
+      Itanium-I/II processors, was intended to be the replacement for x86 (and 
+      may still end up that way, although this is looking increasingly 
+      unlikely). Intel chose to call IA64 an "EPIC" design, for "explicitly 
+      parallel instruction computing", but it's basically just a VLIW with 
+      clever grouping (to allow long-term compatibility) and predication (see 
+      below). Many graphics processors (often called GPU's) can in some ways be 
+      considered VLIW-like (although obviously they only provide single-purpose 
+      instruction sets), and there's also Transmeta (see the x86 section, coming 
+      up soon).</P>
+      <H2><A name=Latencies></A>Instruction Dependencies &amp; Latencies</H2>
+      <P>How far can pipelining and multiple issue be taken? If a 5 stage 
+      pipeline is 5 times faster, why not build a 20 stage superpipeline? If 
+      4-issue superscalar is good, why not go for 8-issue? For that matter, why 
+      not build a processor with a 50 stage pipeline which issues 20 
+      instructions per cycle?</P>
+      <P>Well, consider the following two instructions...</P><PRE>a = b * c;
+d = a + 1;</PRE>
+      <P>The second instruction <SPAN class=b>depends</SPAN> on the first – the 
+      processor can't execute the second instruction until after the first has 
+      completed calculating its result. This is a serious problem, because 
+      instructions that depend on each other cannot be executed in parallel. 
+      Thus, multiple issue is impossible in this case.</P>
+      <P>If the first instruction was a simple integer addition then this might 
+      still be okay in a pipelined <SPAN class=b>single issue</SPAN> processor, 
+      because integer addition is quick and the result of the first instruction 
+      would be available just in time to feed it back into the next instruction 
+      (using bypasses). However in the case of a multiply, which will take 
+      several cycles to complete, there is no way the result of the first 
+      instruction will be available when the second instruction reaches the 
+      execute stage just one cycle later. So, the processor will need to stall 
+      the execution of the second instruction until its data is available, 
+      inserting a <SPAN class=b>bubble</SPAN> into the pipeline where no work 
+      gets done.</P>
+      <P>The number of cycles between when an instruction reaches the execute 
+      stage and when its result is available for use by other instructions is 
+      called the instruction's <SPAN class=b>latency</SPAN><FONT 
+      size=1><SUP>2</SUP></FONT>. The deeper the pipeline, the more stages and 
+      thus the longer the latency. So a very deep pipeline is not much more 
+      effective than a short one, because a deep one just gets filled up with 
+      bubbles thanks to all those nasty instructions depending on each 
+other.</P>
+      <TABLE cellSpacing=0 cellPadding=3 width="80%" align=right border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><FONT size=1><SUP>2</SUP></FONT></TD>
+          <TD><FONT size=1>It can be confusing when the word latency is used 
+            for related, but different, meanings. Here, I'm talking about the 
+            latency as seen by a compiler. Hardware engineers may think of 
+            latency as the total number of cycles required for execution (the 
+            length of the pipeline). So a hardware engineer might say that the 
+            instructions in a simple integer pipeline have a latency of 5 but a 
+            throughput of 1, whereas from a compiler's point of view they have a 
+            latency of 1 because their results are available for use in the very 
+            next cycle. The compiler view is the more common, and is 
+            increasingly being used even in hardware 
+        manuals.</FONT></TD></TR></TBODY></TABLE>
+      <P><BR clear=all><BR>From a compiler's point of view, typical latencies in 
+      modern processors range from a single cycle for integer operations, to 
+      around 3-6 cycles for floating-point addition and the same or perhaps 
+      slightly longer for multiplication, through to over a dozen cycles for 
+      integer division.</P>
+      <P>Latencies for memory loads are particularly troublesome, in part 
+      because they tend to occur early within code sequences, which makes it 
+      difficult to fill their delays with useful instructions, and equally 
+      importantly because they are somewhat unpredictable – the load latency 
+      varies a lot depending on whether the access is a cache hit or not (we'll 
+      get to caches later).</P>
+      <H2><A name=Branches></A>Branches &amp; Branch Prediction</H2>
+      <P>Another key problem for pipelining is branches. Consider the following 
+      code sequence...</P><PRE>if (a &gt; 5)
+   b = c;
+else
+   b = d;</PRE>
+      <P>which compiles into something like...</P><PRE>    cmp a, 5     ; a &gt; 5 ?
+    ble L1
+    mov c, b     ; b = c
+    br L2
+L1: mov d, b     ; b = d
+L2: ...</PRE>
+      <P>Now consider a pipelined processor executing this code sequence. By the 
+      time the conditional branch at line 2 reaches the execute stage in the 
+      pipeline, the processor must have already fetched and decoded the next 
+      couple of instructions. But <SPAN class=b>which</SPAN> instructions? 
+      Should it fetch and decode the <SPAN class=b>if</SPAN> branch (lines 3 
+      &amp; 4) or the <SPAN class=b>else</SPAN> branch (line 5)? It won't really 
+      know until the conditional branch gets to the execute stage, but in a 
+      deeply pipelined processor that might be several cycles away. And it can't 
+      afford to just wait – the processor encounters a branch every six 
+      instructions on average, and if it was to wait several cycles at every 
+      branch then most of the performance gained by using pipelining in the 
+      first place would be lost.</P>
+      <P>So the processor must make a <SPAN class=b>guess</SPAN>. The processor 
+      will then fetch down the path it guessed and <SPAN 
+      class=b>speculatively</SPAN> begin executing those instructions. Of 
+      course, it won't be able to actually commit (writeback) those instructions 
+      until the outcome of the branch is known. Worse, if the guess is wrong the 
+      instructions will have to be cancelled, and those cycles will have been 
+      wasted. But if the guess is correct the processor will be able to continue 
+      on at full speed.</P>
+      <P>The key question is <SPAN class=b>how</SPAN> the processor should make 
+      the guess. Two alternatives spring to mind. First, the compiler might be 
+      able to mark the branch to tell the processor which way to go. This is 
+      called <SPAN class=b>static branch prediction</SPAN>. It would be ideal if 
+      there was a bit in the instruction format in which to encode the 
+      prediction, but for older architectures this is not an option, so a 
+      convention can be used instead (such as backward branches are predicted to 
+      be taken while forward branches are predicted not-taken). More 
+      importantly, however, this approach requires the compiler to be quite 
+      smart in order for it to make the correct guess, which is easy for loops 
+      but might be difficult for other branches.</P>
+      <P>The other alternative is to have the processor make the guess at 
+      runtime. Normally, this is done by using an on-chip <SPAN class=b>branch 
+      prediction table</SPAN> containing the addresses of recent branches and a 
+      bit indicating whether each branch was taken or not last time. In reality, 
+      most processors actually use two bits, so that a single not-taken 
+      occurrence doesn't reverse a generally taken prediction (important for 
+      loop back edges). Of course, this dynamic branch prediction table takes up 
+      valuable space on the processor chip, but branch prediction is so 
+      important that it's well worth it.</P>
+      <P>Unfortunately, even the best branch prediction techniques are sometimes 
+      wrong, and with a deep pipeline many instructions might need to be 
+      cancelled. This is called the <SPAN class=b>mispredict penalty</SPAN>. The 
+      Pentium-Pro/II/III is a good example – it has a 12+ stage pipeline and 
+      thus a mispredict penalty of 10-15 cycles. Even with a clever dynamic 
+      branch predictor that correctly predicts an impressive 90% of the time, 
+      this high mispredict penalty means about 30% of the Pentium-Pro/II/III's 
+      performance is lost due to mispredicts. Put another way, one third of the 
+      time the Pentium-Pro/II/III is not doing useful work but instead is saying 
+      "oops, wrong way".</P>
+      <H2><A name=Predication></A>Eliminating Branches with Predication</H2>
+      <P>Conditional branches are so problematic that it would be nice to 
+      eliminate them altogether. Clearly, <TT>if</TT> statements cannot be 
+      eliminated from programming languages, so how can the resulting branches 
+      possibly be eliminated? The answer lies in the way some branches are 
+      used.</P>
+      <P>Consider the above example once again. Of the five instructions, two 
+      are branches, and one of those is an unconditional branch. If it was 
+      possible to somehow tag the <TT>mov</TT> instructions to tell them to 
+      execute only under some conditions, the code could be simplified...</P><PRE>cmp a, 5        ; a &gt; 5 ?
+mov c, b        ; b = c
+cmovle d, b     ; if le, then b = d</PRE>
+      <P>Here, a new instruction has been introduced called <TT>cmovle</TT>, for 
+      "conditional move if less than or equal". This instruction works by 
+      executing as normal, but only commits itself if its condition is true. 
+      This is called a <SPAN class=b>predicated</SPAN> instruction because its 
+      execution is controlled by a predicate (a true/false test).</P>
+      <P>Given this new predicated move instruction, two instructions have been 
+      eliminated from the code, and both were costly branches. In addition, by 
+      being clever and always doing the first <TT>mov</TT> then overwriting it 
+      if necessary, the parallelism of the code has also been increased – lines 
+      1 and 2 can now be executed in parallel, resulting in a 50% speedup (2 
+      cycles rather than 3). Most importantly, though, the possibility of 
+      getting the branch prediction wrong and suffering a large mispredict 
+      penalty has been eliminated.</P>
+      <P>Of course, if the blocks of code in the <TT>if</TT> and <TT>else</TT> 
+      cases were longer, then using predication would mean executing more 
+      instructions than using a branch, because the processor is effectively 
+      executing <SPAN class=b>both paths</SPAN> through the code. Whether it's 
+      worth executing a few more instructions to avoid a branch is a tricky 
+      decision – for very small or very large blocks the decision is simple, but 
+      for medium-sized blocks there are complex trade-offs which the optimizer 
+      must consider.</P>
+      <P>The Alpha architecture has had a conditional move instruction since the 
+      very beginning. MIPS, SPARC and x86 added it later. With IA64, however, 
+      Intel has gone all-out and made almost every instruction predicated in the 
+      hope of dramatically reducing branching problems in inner loops, 
+      especially ones where the branches are unpredictable (such as compilers 
+      and OS kernels). It will be interesting to see whether this works out well 
+      or not for IA64.</P>
+      <P>Interestingly, the ARM architecture used in many portable handheld 
+      devices was the first architecture with a fully predicated instruction 
+      set. This is even more intriguing given that the ARM processors only have 
+      short pipelines and thus relatively small mispredict penalties.</P>
+      <H2><A name=Scheduling></A>Scheduling, Register Renaming &amp; OOO</H2>
+      <P>If branches and long latency instructions are going to cause bubbles in 
+      the pipeline(s), then perhaps those empty cycles can be used to do other 
+      work. To achieve this, the instructions in the program must be <SPAN 
+      class=b>reordered</SPAN> so that while one instruction is waiting, other 
+      instructions can execute. For example, it might be possible to find a 
+      couple of other instructions from further down in the program and put them 
+      between the two instructions in the earlier multiply example.</P>
+      <P>There are two ways to do this. One approach is to do the reordering in 
+      hardware at runtime. Doing dynamic <SPAN class=b>instruction 
+      scheduling</SPAN> (reordering) in the processor means the dispatch logic 
+      must be enhanced to look at groups of instructions and dispatch them out 
+      of order as best it can to use the processor's functional units. Not 
+      surprisingly, this is called <SPAN class=b>out-of-order execution</SPAN>, 
+      or just OOO for short (sometimes written OoO or OOE).</P>
+      <P>If the processor is going to execute instructions out of order, it will 
+      need to keep in mind the dependencies between those instructions. This can 
+      be made easier by not dealing with the raw architecturally-defined 
+      registers, but instead using a set of <SPAN class=b>renamed</SPAN> 
+      registers. For example, a store of a register into memory, followed by a 
+      load of some other piece of memory into the same register, represent 
+      different <SPAN class=b>values</SPAN> and need not go into the same 
+      physical register. Furthermore, if these different instructions are mapped 
+      to different physical registers they can be executed in parallel, which is 
+      the whole point of OOO execution. So, the processor must keep a mapping of 
+      the instructions in flight at any moment and the physical registers they 
+      use. This process is called <SPAN class=b>register renaming</SPAN>. As an 
+      added bonus, it becomes possible to work with a potentially larger set of 
+      real registers in an attempt to extract even more parallelism out of the 
+      code.</P>
+      <P>All of this dependency analysis, register renaming and OOO execution 
+      adds a lot of complex logic to the processor, making it harder to design 
+      and potentially harder to ramp up the clock speed over time. On the other 
+      hand, it offers the advantage that software need not be recompiled to get 
+      at least some of the benefits of the new processor's design (though 
+      typically not all).</P>
+      <P>Another approach to the whole problem is to have the <SPAN 
+      class=b>compiler</SPAN> optimize the code by rearranging the instructions 
+      (called static, or compile-time, instruction scheduling). The rearranged 
+      instruction stream can then be fed to a processor with simpler in-order 
+      multiple-issue logic, relying on the compiler to "spoon feed" the 
+      processor with the best instruction stream. Avoiding the need for complex 
+      OOO logic should make the processor quite a lot easier to design, and 
+      should potentially make it easier to ramp up the clock speed over 
+time.</P>
+      <P>The compiler approach also has some other advantages over OOO hardware 
+      – it can see further down the program than the hardware, and it can 
+      speculate down multiple paths rather than just one (a big issue if 
+      branches are unpredictable). On the other hand, a compiler can't be 
+      expected to be psychic, so it can't necessarily get everything perfect all 
+      the time. Without OOO hardware, the pipeline will stall when the compiler 
+      fails to predict something like a cache miss.</P>
+      <P>Most of the early superscalars were in-order designs (SuperSPARC, 
+      hyperSPARC, UltraSPARC, Alpha 21064 &amp; 21164). Examples of OOO designs 
+      include the MIPS R10000, Alpha 21264 and to some extent the entire 
+      POWER/PowerPC line (with their reservation stations). UltraSPARC-III is 
+      the most notable recent design which has stayed in-order and not added any 
+      OOO execution hardware.</P>
+      <H2><A name=Brainiac></A>The Brainiac Debate</H2>
+      <P>Whether compilers can do the task of instruction scheduling well enough 
+      or not is a hot question at the moment in the hardware industry. This is 
+      called the <SPAN class=b>brainiac vs speed-demon</SPAN> debate. This 
+      simple (and fun) classification of design styles first appeared in a <A 
+      href="http://www.mdronline.com/mpr/">1993 Microprocessor Report 
+      editorial</A> by Linley Gwennap, and was made widely known by Dileep 
+      Bhandarkar's <A 
+      href="http://www.amazon.com/exec/obidos/tg/detail/-/1555581307/qid=1062592416/sr=8-1/ref=sr_8_1/102-9508424-3376920?v=glance&amp;s=books&amp;n=507846">Alpha 
+      Implementations &amp; Architecture</A> book.</P>
+      <P><SPAN class=b>Brainiac</SPAN> designs are at the smart-machine end of 
+      the spectrum, like IBM's POWER2 and the MIPS R10000, whereas <SPAN 
+      class=b>speed-demon</SPAN> designs like the Alpha 21164 and UltraSPARC 
+      rely on a smart compiler. Clearly, OOO hardware should make it possible 
+      for more instruction-level parallelism to be extracted, because things 
+      will be known at runtime that cannot be predicted in advance (cache 
+      misses, for example). On the other hand, an in-order design is potentially 
+      able to run at faster clock speeds at any given point in time, due to 
+      reduced design complexity.</P>
+      <P>Exactly which is the more important factor is currently open to hot 
+      debate. At present, it seems that both the benefits and the costs of OOO 
+      execution have been somewhat overstated. In terms of cost, appropriate 
+      pipelining of the dispatch and register renaming logic has allowed OOO 
+      processors to achieve clock speeds competitive with simpler designs – the 
+      aggressively OOO Alpha 21264, moderately OOO PowerPC G4e, and simpler 
+      in-order UltraSPARC-III are all available at comparable clock speeds, for 
+      example. This is a testament to some outstanding engineering by processor 
+      architects. Unfortunately, however, the effectiveness of OOO execution in 
+      dynamically extracting additional instruction-level parallelism has been 
+      disappointing, with only a relatively small improvement being seen<FONT 
+      size=1><SUP>3</SUP></FONT>. OOO execution has also been unable to deliver 
+      the degree of schedule-insensitivity originally hoped for, with 
+      recompilation still producing large speedups even on aggressive OOO 
+      processors such as the MIPS R10000 and Alpha 21264.</P>
+      <TABLE cellSpacing=0 cellPadding=3 width="80%" align=right border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><FONT size=1><SUP>3</SUP></FONT></TD>
+          <TD><FONT size=1>Be careful not to fall for the temptation of 
+            comparing the Alpha 21164 and 21264 against each other solely as a 
+            measure of the benefits of OOO execution. At one point in time, both 
+            did exist at comparable clock speeds, but there are other major 
+            differences such as on-chip caches and memory system behavior. 
+            Overall, the 21264 is twice as fast on SPEC as the 21164, so it 
+            might appear that OOO execution is achieving a 2X speedup, but 
+            compare the Alpha 21264 against UltraSPARC-III, an in-order design 
+            of the same generation, and the 21264's per-clock advantage from OOO 
+            execution drops to less than 20%.</FONT></TD></TR></TBODY></TABLE>
+      <P><BR clear=all><BR>When it comes to the brainiac debate, many vendors 
+      have gone down one path then changed their mind and switched to the other 
+      side...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=299 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/Brainiacs.gif" 
+            width=508 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>Brainiacs vs 
+      Speed-Demons.</I></TD></TR></TBODY></TABLE>
+      <P>DEC, for example, went primarily speed-demon with the first two 
+      generations of Alpha, then changed to brainiac for the third generation. 
+      MIPS did similarly. Sun, on the other hand, went brainiac with their first 
+      superscalar then switched to speed-demon for more recent designs. The 
+      PowerPC camp has also gradually moved away from brainiac designs over the 
+      years, although the reservation stations in all PowerPC designs do offer a 
+      degree of OOO execution between different functional units even if the 
+      instructions within each functional unit's queue are executed strictly in 
+      order. Intel is sort-of going both ways at once – x86 processors have no 
+      choice but to be at least somewhat brainiac due to limitations of the x86 
+      architecture (though the Pentium-4 is about as speed-demon as possible for 
+      a decoupled x86 microarchitecture), but with IA64, Intel is betting 
+      solidly on the smart-compiler approach, with a simple but very wide design 
+      relying totally on static scheduling (at least in the first two 
+      generations).</P>
+      <P>No matter which route is taken, the key problem is still the same – 
+      normal programs just don't have a lot of fine-grained parallelism in them. 
+      A 4-issue superscalar processor requires four independent instructions to 
+      be available, with all their dependencies and latencies met, at every 
+      cycle. In reality this is virtually never possible, especially with load 
+      latencies of two or three cycles (and increasing with every processor 
+      generation). Currently, real-world instruction-level parallelism for 
+      mainstream applications is limited to about 2 instructions per cycle at 
+      best. Certain types of applications do exhibit more parallelism, such as 
+      scientific code, but these are generally not representative of mainstream 
+      applications. There are also some types of code, such as pointer chasing, 
+      where even sustaining 1 instruction per cycle is extremely difficult. For 
+      those programs, the key problem is the memory system (which we'll get to 
+      later).</P>
+      <H2><A name=x86></A>What About x86?</H2>
+      <P>So where does x86 fit into all this, and how have Intel and AMD been 
+      able to remain competitive through all of these developments in spite of 
+      an architecture that's now more than 20 years old?</P>
+      <P>While the Pentium, a superscalar x86, was an amazing piece of 
+      engineering, it was clear that the big problem was the complex and messy 
+      x86 instruction set. Complex addressing modes and a minimal number of 
+      registers meant that few instructions could be executed in parallel due to 
+      potential dependencies. For the x86 camp to compete with the RISC 
+      platforms, they needed to find a way to "get around" the x86 instruction 
+      set.</P>
+      <P>The solution, invented independently (at about the same time) by 
+      engineers at both NexGen and Intel, was to <SPAN class=b>dynamically 
+      decode</SPAN> the x86 instructions into simple, RISC-like 
+      micro-instructions, which can then be executed by a fast, RISC-style 
+      register-renaming OOO superscalar core.</P>
+      <P>For these "decoupled" superscalar x86 processors, register renaming is 
+      absolutely critical due to the meager 8 registers of the x86 architecture. 
+      This differs strongly from the RISC architectures, where providing more 
+      registers via renaming only has a minor effect. Nonetheless, with clever 
+      register renaming, the full bag of RISC tricks become available to the x86 
+      world, with the two exceptions of advanced static instruction scheduling 
+      (because the micro-instructions are hidden behind the x86 layer and thus 
+      are less visible to compilers) and the use of a large register set to 
+      avoid memory accesses (because x86 only has 8 architecturally-visible 
+      registers).</P>
+      <P>The basic scheme works something like this...<BR><BR></P></TD>
+    <TD width="10%"></TD></TR>
+  <TR>
+    <TD colSpan=3>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=333 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/RISCy-x86.gif" 
+            width=603 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>A "RISCy x86" decoupled 
+        microarchitecture.</I></TD></TR></TBODY></TABLE></TD></TR>
+  <TR>
+    <TD width="10%"></TD>
+    <TD width="80%">
+      <P><BR>All recent x86 processors use this technique, including NexGen's 
+      Nx586, the Pentium-Pro/II/III/M, the AMD K6 and Athlon, and the Pentium-4. 
+      Of course, they all differ in the exact design of their core pipelines, 
+      functional units and so on, just like the various RISC processors, but the 
+      fundamental idea of translating from x86 to internal micro-instructions is 
+      common to all of them.</P>
+      <P>One of the most interesting members of this RISC-style x86 group is the 
+      Transmeta Crusoe processor, which translates x86 instructions into an 
+      internal VLIW form, rather than internal superscalar, and uses <SPAN 
+      class=b>software</SPAN> to do the translation at runtime, much like a Java 
+      virtual machine. This approach allows the processor itself to be a simple 
+      VLIW, without the complex x86 decoding and register renaming hardware of 
+      decoupled x86 designs, and without any superscalar dispatch or OOO logic 
+      either. The software-based x86 translation does reduce the system's 
+      performance compared to hardware translation (which occurs as additional 
+      pipeline stages and thus is almost free in performance terms), but the 
+      result is a very lean chip which runs fast and cool and uses very little 
+      power. A 600 MHz Crusoe processor could match a then-current 500 MHz 
+      Pentium-III running in its low-power mode (300 MHz clock speed) while 
+      using only a fraction of the power and generating only a fraction of the 
+      heat. This made it ideal for laptops and handheld computers, where battery 
+      life is crucial. Today, of course, processor variants designed 
+      specifically for low power use, such as the Pentium-M (aka: Centrino), 
+      have made the Transmeta-style software-based approach unnecessary.</P>
+      <H2><A name=SMT></A>Threads - SMT, Hyper-Threading &amp; Multi-core</H2>
+      <P>As already mentioned, the approach of exploiting instruction-level 
+      parallelism through superscalar execution is seriously weakened by the 
+      fact that most normal programs just don't have a lot of fine-grained 
+      parallelism in them. Because of this, even the most aggressively brainiac 
+      OOO superscalar processor, coupled with a smart and aggressive compiler to 
+      spoon feed it, will still almost never exceed an average of about 2 
+      instructions per cycle when running most real-world software, due to a 
+      combination of load latencies, cache misses, branching and dependencies 
+      between instructions. Issuing many instructions in the same cycle only 
+      ever happens for short bursts of a few cycles at most, separated by many 
+      cycles of executing low-ILP code, so peak performance is not even close to 
+      being achieved.</P>
+      <P>If additional independent instructions aren't available within the 
+      program being executed, there is another potential source of independent 
+      instructions – other running programs (or other threads within the same 
+      program). <SPAN class=b>Simultaneous multithreading</SPAN> (SMT) is a 
+      processor design technique which exploits exactly this type of 
+      thread-level parallelism.</P>
+      <P>Once again, the idea is to fill those empty bubbles in the pipelines 
+      with useful instructions, but this time rather than using instructions 
+      from further down in the same program (which are hard to come by), the 
+      instructions come from <SPAN class=b>multiple threads</SPAN> running at 
+      the same time, all on the <SPAN class=b>one processor core</SPAN>. So, an 
+      SMT processor appears to the rest of the system as if it were multiple 
+      independent processors, just like a true multiprocessor system.</P>
+      <P>Of course, a true multiprocessor system also executes multiple threads 
+      simultaneously –&nbsp;but only one in each processor. This is also true 
+      for <SPAN class=b>multi-core</SPAN> processors (eg: the POWER4 and 
+      upcoming UltraSPARC-IV), which place two or more processor cores onto a 
+      single chip, but are otherwise no different from traditional 
+      multiprocessor systems. In contrast, an SMT processor uses just one <SPAN 
+      class=b>physical</SPAN> processor core to present two or more <SPAN 
+      class=b>logical</SPAN> processors to the system. This makes SMT much more 
+      efficient than a multi-core processor in terms of chip space, fabrication 
+      cost, power usage and heat dissipation. And of course there's nothing 
+      preventing a multi-core implementation where each core is an SMT 
+      design.</P>
+      <P>From a hardware point of view, implementing SMT requires duplicating 
+      all of the parts of the processor which store the "execution state" of 
+      each thread – things like the program counter, the architecturally-visible 
+      registers (but not the rename registers), the memory mappings held in the 
+      TLB, and so on. Luckily, these parts only constitute a tiny fraction of 
+      the overall processor's hardware. The really large and complex parts, such 
+      as the decoders and dispatch logic, the functional units, and the caches, 
+      are all shared between the threads.</P>
+      <P>Of course, the processor must also keep track of which instructions and 
+      which rename registers belong to which threads at any given point in time, 
+      but it turns out that this only adds a small amount to the complexity of 
+      the core logic. So, for the relatively cheap design cost of around 10-20% 
+      more logic in the core (and an almost negligible increase in transistor 
+      count and final production cost), the processor can execute several 
+      threads simultaneously, hopefully resulting in a substantial increase in 
+      functional unit utilization and instructions-per-clock (and thus overall 
+      performance).</P>
+      <P>The instruction flow of an SMT processor looks something like...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=144 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/SMT.gif" 
+            width=391 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>The instruction flow of an SMT 
+        processor.</I></TD></TR></TBODY></TABLE>
+      <P>This is really great! Now that we can fill those bubbles by running 
+      multiple threads, we can justify adding more functional units than would 
+      normally be viable in a single-threaded processor, and really go to town 
+      with multiple instruction issue. In some cases, this may even have the 
+      side effect of improving single-thread performance (for particularly 
+      ILP-friendly code, for example).</P>
+      <P>So 20-issue here we come, right? Unfortunately, the answer is no.</P>
+      <P>SMT performance is a tricky business. First, the whole idea of SMT is 
+      built around the assumption that either lots of programs are 
+      simultaneously executing (not just sitting idle), or if just one program 
+      is running, it has <SPAN class=b>lots of threads all executing</SPAN> at 
+      the same time. Experience with existing multiprocessor systems shows that 
+      this isn't always true. In practice, at least for desktops, laptops and 
+      small servers, it is rarely the case that several different programs are 
+      actively executing at the same time, so it usually comes down to just the 
+      one task that the machine is currently being used for.</P>
+      <P>Some applications, such as database systems, image &amp; video 
+      processing, audio processing, 3D graphics rendering and scientific code, 
+      do have obvious high-level (course-grained) parallelism available and easy 
+      to exploit, but unfortunately many of these applications have not been 
+      written to make use of multiple threads in order to exploit multiple 
+      processors. In addition, many of the applications which are inherently 
+      parallel in nature are primarily limited by memory bandwidth, not by the 
+      processor (eg: image &amp; video processing, audio processing, scientific 
+      code), so adding a second thread or processor won't help them – unless 
+      memory bandwidth is also dramatically increased. Worse yet, many other 
+      applications such as web browsers, multimedia design tools, language 
+      interpreters, hardware simulations and so on, are simply not inherently 
+      parallel enough to make effective use of multiple processors.</P>
+      <P>On top of this, the fact that the threads are all <SPAN 
+      class=b>sharing</SPAN> just one processor core, and just one set of 
+      caches, has major performance downsides compared to a true multiprocessor 
+      (or multi-core). Within the pipelines of an SMT processor, if one thread 
+      saturates just one functional unit which the other threads need, it 
+      effectively stalls all the other threads, even if they only need 
+      relatively little use of that unit. Thus, balancing the progress of the 
+      threads becomes critical, and the most effective use of SMT is for 
+      applications with highly variable code mixtures (so that the threads don't 
+      constantly compete for the same hardware resources). Also, competition 
+      between the threads for cache space may produce worse results than letting 
+      just one thread have all the cache space available –&nbsp;particularly for 
+      applications where the critical working set is highly cache-size 
+      sensitive, such as hardware simulators/emulators, virtual machines and 
+      high quality video encoding (with a large motion prediction window).</P>
+      <P>The bottom line is that without care, and even with care for some 
+      applications, SMT performance can actually be <SPAN class=b>worse</SPAN> 
+      than single-thread performance and traditional context switching between 
+      threads. On the other hand, applications which are limited primarily by 
+      memory latency, such as database systems and 3D graphics rendering, <SPAN 
+      class=b>benefit dramatically</SPAN> from SMT, since it offers an effective 
+      way of using the otherwise idle time during cache misses (we'll cover 
+      caches later). Thus, SMT presents a very complex and <SPAN 
+      class=b>application-specific</SPAN> performance picture. This also makes 
+      it a difficult challenge for marketing – sometimes almost as fast as two 
+      "real" processors, sometimes more like two really lame processors, 
+      sometimes even worse than one processor, huh?</P>
+      <P>The Pentium-4 was the first (and is still the only) processor to use 
+      SMT, which Intel calls "Hyper-Threading". Its design allows for 2 
+      simultaneous threads (although earlier revisions of the Pentium-4 have the 
+      SMT feature disabled due to bugs). The Alpha 21464 was an SMT design 
+      supporting 4 threads, but alas the Alpha architecture was terminated 
+      before the 21464 reached production. Several future processors will be SMT 
+      designs, including UltraSPARC-V and POWER5 (both of which will also be 
+      multi-core).</P>
+      <H2><A name=SIMD></A>Data Parallelism - SIMD Vector Instructions</H2>
+      <P>In addition to instruction parallelism, there is another source of 
+      parallelism in many programs – data parallelism. Rather than looking for 
+      ways to execute groups of instructions in parallel, the idea is to look 
+      for ways to make one instruction apply to a group of values in 
+      parallel.</P>
+      <P>This is sometimes called SIMD parallelism (single instruction, multiple 
+      data). More often, it's called <SPAN class=b>vector processing</SPAN>. 
+      Supercomputers used to use vector processing a lot, with very long 
+      vectors, because the types of scientific programs which are run on 
+      supercomputers are quite amenable to vector processing.</P>
+      <P>Today, however, vector supercomputers have long since given way to 
+      multiprocessor designs where each processing unit is a commodity RISC CPU. 
+      So why revive vector processing?</P>
+      <P>In many situations, especially in imaging, video and multimedia 
+      applications, a program needs to execute the same instruction for a <SPAN 
+      class=b>small group</SPAN> of related values, usually a short vector (a 
+      simple structure or small array). For example, an image processing 
+      application might want to add groups of 8-bit numbers, where each 8-bit 
+      number represents one of the red, green, blue or alpha (transparency) 
+      values of a pixel...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=136 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/ShortVectorAdd.gif" 
+            width=381 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>A SIMD vector addition 
+        operation.</I></TD></TR></TBODY></TABLE>
+      <P>What's happening here is exactly the same operation as a 32-bit 
+      addition, except that every 8th carry is not being propagated. Also, it 
+      might be desirable for the values not to wrap to zero once all 8 bits are 
+      full, and instead to hold at 255 as a maximum value in those cases (called 
+      saturation arithmetic). In other words, every 8th carry is not carried 
+      across but instead triggers an all-ones result. So, the vector addition 
+      operation shown above is really just a modified 32-bit add.</P>
+      <P>From the hardware point of view, adding these types of vector 
+      instructions is not terribly difficult – existing registers can be used 
+      and in many cases the functional units can be shared with existing integer 
+      or floating-point units. Other useful packing and unpacking instructions 
+      can also be added, for byte shuffling and so on, and a few predicate-like 
+      instructions for bit-masking etc. With some thought, a small set of vector 
+      instructions can enable some impressive speedups.</P>
+      <P>Of course, there's no reason to stop at 32 bits. If there happen to be 
+      some 64-bit registers, which architectures usually have for floating-point 
+      (at least), they could be used to provide 64-bit vectors, thereby doubling 
+      the parallelism (UltraSPARC VIS and x86 MMX do this). If it is possible to 
+      define entirely new registers, then they might as well be even wider 
+      (MMX2/SSE adds 128-bit registers for SIMD floating-point (only), while 
+      PowerPC AltiVec provides a full set of 32 new 128-bit registers<FONT 
+      size=1><SUP>4</SUP></FONT>). The registers can also be divided up in other 
+      ways, for example as 16-bit integers or as 32-bit floating-point values. 
+      With AltiVec, for example, it is possible to execute a 4-way parallel 
+      floating-point multiply-add as a single, fully pipelined instruction.</P>
+      <TABLE cellSpacing=0 cellPadding=3 width="80%" align=right border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><FONT size=1><SUP>4</SUP></FONT></TD>
+          <TD><FONT size=1>This is in keeping with PowerPC's more separated 
+            design style, where even the branch instructions have their own 
+            registers.</FONT></TD></TR></TBODY></TABLE>
+      <P><BR clear=all><BR>For applications where this type of data parallelism 
+      is available and easy to extract, SIMD vector instructions can produce 
+      amazing speedups. The original target applications were primarily in the 
+      area of image and video processing, however suitable applications also 
+      include audio processing, speech recognition, some parts of 3D graphics 
+      rendering and many types of scientific programs. For other types of 
+      applications, such as compilers and database systems, the speedup is 
+      generally much smaller, perhaps even nothing at all.</P>
+      <P>Unfortunately, it's quite difficult for a compiler to automatically 
+      make use of vector instructions when working from normal source code, 
+      except in trivial cases. The key problem is that the way programmers write 
+      programs tends to serialize everything, which makes it difficult for a 
+      compiler to prove that two given operations are independent and can be 
+      done in parallel. Progress is slowly being made in this area, but at the 
+      moment programs must basically be rewritten by hand to take advantage of 
+      vector instructions (except for simple FORTRAN loops in scientific 
+      code).</P>
+      <P>Luckily, however, rewriting just a small amount of code in key places 
+      within the graphics and video/audio libraries of your favorite operating 
+      system has a widespread effect across many applications. Today, most OS's 
+      have enhanced their key library functions in this way, so that virtually 
+      all multimedia and 3D graphics applications do make use of these highly 
+      effective vector instructions. Chalk up yet another win for 
+      abstraction!</P>
+      <P>Almost every architecture has now added SIMD vector extensions, 
+      including SPARC (VIS), x86 (MMX/SSE, 3DNow!), PowerPC (AltiVec) and Alpha 
+      (MVI). Only relatively recent processors from each architecture can 
+      execute these new instructions, however, which raises backward 
+      compatibility issues. The MIPS architecture is notable for not adding SIMD 
+      vector instructions.</P>
+      <H2><A name=Caches></A>Caches &amp; The Memory Hierarchy</H2>
+      <P>As mentioned earlier, latency is a big problem for pipelined 
+      processors, and latency is especially bad for loads from memory, which 
+      make up about a quarter of all instructions.</P>
+      <P>Loads tend to occur near the beginning of code sequences (basic 
+      blocks), with most of the other instructions depending on the data being 
+      loaded. This causes all the other instructions to stall, and makes it 
+      difficult to obtain large amounts of instruction-level parallelism. Things 
+      are even worse than they might first seem, because in practice most 
+      superscalar processors can still only issue one, or at most two, memory 
+      instructions per cycle.</P>
+      <P>The core problem with memory access is that building a fast memory 
+      system is very difficult because of fixed limits, like the speed of light. 
+      These impose delays while a signal is transferred out to RAM and back. 
+      Nothing can change this fact of nature – we must learn to work around 
+      it.</P>
+      <P>For example, access latency for main memory, even using a modern SDRAM 
+      with a CAS latency of 2, will typically be around 9 cycles of the <SPAN 
+      class=b>memory system clock</SPAN> – 1 to send the address to the chipset 
+      (north bridge), 1 more to get it to the DIMM, RAS-to-CAS delay of 2 
+      (assuming a page miss), CAS latency of 2, another 1 to get the data to the 
+      output buffer of the DIMM, 1 to send the data back to the chipset, and a 
+      final 1 to send the data up to the E-cache and processor<FONT 
+      size=1><SUP>5</SUP></FONT>.</P>
+      <TABLE cellSpacing=0 cellPadding=3 width="80%" align=right border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><FONT size=1><SUP>5</SUP></FONT></TD>
+          <TD><FONT size=1>Of course, on a multiprocessor system additional 
+            bus cycles may also be required to support cache 
+            coherency</FONT><FONT size=1>.</FONT></TD></TR></TBODY></TABLE>
+      <P><BR clear=all><BR>Assuming a typical 133 MHz SDRAM memory system (eg: 
+      either PC133 or DDR266/PC2100), and assuming a 1.3 GHz processor, this 
+      makes 9*10 = 90 cycles of the <SPAN class=b>CPU clock</SPAN> to access 
+      main memory! Yikes, you say! And it gets worse – a 1.6 GHz processor would 
+      take it to 108 cycles, a 2.0 GHz processor to 135 cycles, and even if the 
+      memory system was increased to 166 MHz (and still stayed CL2), a 3.0 GHz 
+      processor would wait a staggering 162 cycles!</P>
+      <P>Furthermore, although a DDR SDRAM memory system transfers <SPAN 
+      class=b>data</SPAN> on both the rising and falling edges of the clock 
+      signal (ie: at "double data rate"), the true clock speed of the memory 
+      system is still only half that, and it is the true clock speed which 
+      applies for control signals. So the latency of a DDR memory system is the 
+      same as a non-DDR system, even though the bandwidth is doubled (more on 
+      the difference between bandwidth and latency later).</P>
+      <P>Also note that a substantial portion of memory latency (2 of the 9 bus 
+      cycles) involves the transfer of data between the processor and the 
+      chipset on the motherboard. One way to reduce this is to not change the 
+      memory system clock but dramatically increase the speed of the <SPAN 
+      class=b>frontside bus</SPAN> (FSB) between the processor and the chipset 
+      (eg: 200-266 MHz DDR in Alpha 21264 &amp; Athlon, 400-800 MHz DDR/QDR in 
+      Pentium-4, 800-1000 MHz DDR in PowerPC G5). An even better (but less 
+      flexible) approach is to integrate the memory controller directly onto the 
+      processor chip, which allows the 2 <SPAN class=b>bus</SPAN> cycles to be 
+      converted into much faster <SPAN class=b>processor</SPAN> cycles instead 
+      (eg: UltraSPARC-IIi/IIe &amp; III, Opteron).</P>
+      <P>Unfortunately, both DDR memory and faster frontside busses (or on-chip 
+      memory controllers) are only able to do so much – and memory latency 
+      continues to climb at an alarming rate as the clock speeds of processors 
+      continue to rise. This problem of the rapidly widening gap between the 
+      processor and memory is sometimes called the <SPAN class=b>memory 
+      wall</SPAN>. It is perhaps the single most important problem facing 
+      hardware engineers and compiler writers today. The trend is clear – 
+      processors increase in clock speed by about 40-60% per year, while DRAM 
+      speeds increase by less than 10%. If this continues, it will soon make 
+      very little difference what type of processor is used – all that will 
+      matter is the memory system...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=265 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/MemoryWall.gif" 
+            width=459 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>The widening gap between processor and memory 
+            (the memory wall).</I></TD></TR></TBODY></TABLE>
+      <P>Modern processors try to solve this problem with <SPAN 
+      class=b>caches</SPAN><FONT size=1><SUP>6</SUP></FONT>. A cache is a small 
+      but fast type of memory located on or near the processor chip. Its role is 
+      to keep copies of small pieces of main memory. When the processor asks for 
+      a particular piece of main memory, the cache can supply it much more 
+      quickly than main memory would be able to – if the data is in the 
+      cache.</P>
+      <TABLE cellSpacing=0 cellPadding=3 width="80%" align=right border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><FONT size=1><SUP>6</SUP></FONT></TD>
+          <TD><FONT size=1>The word cache is pronounced like "<B>cash</B>"... 
+            as in "a cache of weapons" or "a cache of supplies". It means a 
+            place for hiding or storing things. It is <B>not</B> pronounced 
+            "ca-shay" or "kay-sh".</FONT></TD></TR></TBODY></TABLE>
+      <P><BR clear=all><BR>Typically, there are small but fast "primary" level-1 
+      (L1) caches on the processor chip itself, usually around 8-64 KB in size, 
+      with a larger level-2 (L2) cache further away (a few hundred KB to a few 
+      MB), and possibly an even larger and slower L3 cache etc. The combination 
+      of the on-chip caches, the off-chip external cache (E-cache) and main 
+      memory (DRAM) together form a <SPAN class=b>memory hierarchy</SPAN>, with 
+      each successive level being larger but slower than the one before it. At 
+      the bottom of the memory hierarchy, of course, is the virtual memory 
+      system (paging/swapping), which provides the illusion of an even larger 
+      amount of main memory by moving pages of RAM to and from hard disk storage 
+      (which is even slower again, by a large margin).</P>
+      <P>It's a bit like working at a desk in a library<FONT 
+      size=1><SUP>7</SUP></FONT>... You might have two or three books open on 
+      the desk itself. Accessing them is fast (you can just look), but you can't 
+      fit more than a couple on the desk at the same time – and even if you 
+      could, accessing 100 books laid out on a huge desk would take longer 
+      because you'd have to walk between them. Instead, in the corner of the 
+      desk you might have a pile of a dozen more books. Accessing them is 
+      slower, because you have to reach over, grab one and open it up. Each time 
+      you open a new one, you also have to put one of the books already on the 
+      desk back into the pile to make room. Finally, when you want a book that's 
+      not on the desk, and not in the pile, it's very slow to access because you 
+      have to get up and walk around the library looking for it. However the 
+      size of the library means you have access to thousands of books, far more 
+      than could ever fit on your desk.</P>
+      <TABLE cellSpacing=0 cellPadding=3 width="80%" align=right border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><FONT size=1><SUP>7</SUP></FONT></TD>
+          <TD><FONT size=1>The "library" analogy presented here is an extended 
+            form of the one used in the famous and widely used 
+            Patterson/Hennessy textbook (link at end of article), which is an 
+            excellent book on these subjects – you could not go far wrong by 
+            consulting it for more information.</FONT></TD></TR></TBODY></TABLE>
+      <P><BR clear=all><BR>The amazing thing about caches is that they work 
+      <SPAN class=b>really well</SPAN> – they effectively make the memory system 
+      seem almost as fast as the L1 cache, yet as large as main memory. A modern 
+      primary (L1) cache has a latency of just two or three processor cycles, 
+      which is dozens of times faster than accessing main memory, and modern 
+      primary caches achieve hit rates of around 90% for most applications. So 
+      90% of the time, accessing memory only takes a couple of cycles.</P>
+      <P>Caches can achieve these seemingly amazing hit rates because of the way 
+      programs work. Most programs exhibit <SPAN class=b>locality</SPAN> in both 
+      time and space – when a program accesses a piece of memory, there's a good 
+      chance it will need to re-access the same piece of memory in the near 
+      future (temporal locality), and there's also a good chance that it will 
+      need to access other nearby memory in the future as well (spatial 
+      locality). Temporal locality is exploited by merely keeping 
+      recently-accessed data in the cache. To take advantage of spatial 
+      locality, data is transferred from main memory up into the cache in blocks 
+      of a few dozen bytes at a time, called a <SPAN class=b>cache 
+      block</SPAN>.</P>
+      <P>From the hardware point of view, a cache works like a two column table 
+      – one column is the memory address and the other is the block of data 
+      values (remember that each cache line is a whole block of data, not just a 
+      single value). Of course, in reality the cache need only store the 
+      necessary higher-end part of the address, since lookups work by using the 
+      lower part of the address to index the cache. When the higher part, called 
+      the <SPAN class=b>tag</SPAN>, matches the tag stored in the table, this is 
+      a <SPAN class=b>hit</SPAN> and the appropriate piece of data can be sent 
+      to the CPU...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=217 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/CacheLookup.gif" 
+            width=426 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>A cache lookup.</I></TD></TR></TBODY></TABLE>
+      <P>It is possible to use either the physical address or the virtual 
+      address to do the cache lookup. Each has pros and cons (like everything 
+      else in computing). Using the virtual address might cause problems because 
+      different programs use the same virtual addresses to map to different 
+      physical addresses – the cache might need to be flushed on every context 
+      switch. On the other hand, using the physical address means the 
+      virtual-to-physical mapping must be performed as part of the cache lookup, 
+      making every lookup slower. A common trick is to use virtual addresses for 
+      the cache indexing but physical addresses for the tags. The 
+      virtual-to-physical mapping (TLB lookup) can then be performed in parallel 
+      with the cache indexing so that it will be ready in time for the tag 
+      comparison. Such a scheme is called a virtually-indexed physically-tagged 
+      cache.</P>
+      <P>The sizes and speeds of caches in modern processors differ quite a lot. 
+      The most important is the primary data cache. Some processors go for small 
+      data caches (Pentium-Pro/II/III, UltraSPARC &amp; Itanium-I/II have 16k 
+      D-caches, Alpha 21164 &amp; Pentium-4 are even smaller at just 8k – but 
+      they also have on-chip L2 caches). Others are a bit larger (32k for MIPS 
+      R10000, PowerPC G3/G4, G4e, G5 &amp; Pentium-M, 64k for Alpha 21264, 
+      Athlon &amp; UltraSPARC-III). For such caches, access latency is either 2 
+      cycles (Alpha 21164, UltraSPARC, MIPS R10000, PowerPC G3/G4, 
+      UltraSPARC-III, Pentium-4, Itanium-I) or 3 cycles (Pentium-Pro/II/III/M, 
+      Alpha 21264, Athlon, PowerPC G4e &amp; G5). Of particular note here is the 
+      Itanium-II, which achieves the remarkable (and ideal) feat of having a 
+      mere 1 cycle access latency for its D-cache! At the other extreme, some 
+      processors use much larger but slower L1 caches (HP's PA-8000 had a huge 1 
+      MB L1 data cache placed off-chip as an array of expensive, 
+      ultra-high-performance SRAM's, greatly increasing the cost of the 
+      PA-8000).</P>
+      <P>Many modern processors also have a second level of on-chip cache, 
+      between primary (L1) and external (E-cache). As a result, you should get 
+      out of the old habit of thinking of L2 as E-cache. Processors with on-chip 
+      L2 caches include the Alpha 21164 (but curiously not the 21264), the 
+      Pentium-4, PowerPC G4e &amp; G5, Itanium-I, Pentium-M and Opteron. The 
+      Itanium-II includes both an on-chip L2 and an on-chip L3 cache! Relatively 
+      small L1 caches already take up to half of the chip area for many modern 
+      processors, so you can imagine how much area an L2 cache would take, yet 
+      this is still probably the best use for the high transistor budgets 
+      allowed by modern chip fabrication technology.</P>
+      <H2><A name=Associativity></A>Cache Conflicts &amp; Associativity</H2>
+      <P>Ideally, a cache should keep the data that is most likely to be needed 
+      in the future. Since caches aren't psychic, a good approximation of this 
+      is to keep the most recently used data.</P>
+      <P>Unfortunately, keeping <SPAN class=b>exactly</SPAN> the most recently 
+      used data would mean that data from <SPAN class=b>any</SPAN> memory 
+      location could be placed into <SPAN class=b>any</SPAN> cache line. The 
+      cache would thus contain exactly the most recently used <I>n</I> KB of 
+      data, which would be great for exploiting locality but unfortunately is 
+      <SPAN class=b>not</SPAN> suitable for allowing fast access – accessing the 
+      cache would require checking <SPAN class=b>every</SPAN> cache line for a 
+      possible match, which would be very slow for a modern cache with thousands 
+      of lines.</P>
+      <P>Instead, a cache usually only allows data from any particular address 
+      in memory to occupy one, or at most a handful, of locations within the 
+      cache. Thus, only one or a handful of checks are required during access, 
+      so access can be kept fast (which is the whole point of having a cache in 
+      the first place). This approach does have a downside, however – it means 
+      the cache doesn't store the absolutely best set of recently accessed data, 
+      because several different locations in memory will all map to the <SPAN 
+      class=b>same one location</SPAN> in the cache. When two such memory 
+      locations are wanted at the same time, such a scenario is called a <SPAN 
+      class=b>cache conflict</SPAN>.</P>
+      <P>Cache conflicts can cause "pathological" worst-case performance 
+      problems, because when a program repeatedly accesses two memory locations 
+      which happen to map to the same cache line, the cache must keep storing 
+      and loading from main memory and thus suffering the long main memory 
+      latency on each access. This type of situation is called thrashing, since 
+      the cache is not achieving anything and is simply getting in the way – 
+      despite obvious temporal locality and reuse of data, the cache is unable 
+      to exploit the locality offered by this particular access pattern due to 
+      limitations of its simplistic mapping between memory locations and cache 
+      lines.</P>
+      <P>To address this problem, more sophisticated caches are able to place 
+      data in a small number of different places within the cache, rather than 
+      just a single place. The number of places a piece of data can be stored in 
+      a cache is called its <SPAN class=b>associativity</SPAN><FONT 
+      size=1><SUP>8</SUP></FONT>. As described above, the simplest and fastest 
+      caches allow for only one place in the cache for each address in memory – 
+      each piece of data is simply mapped to <TT>address % size</TT> within the 
+      cache by simply looking at the lower bits of the address (as in the above 
+      diagram). This is called a <SPAN class=b>direct mapped</SPAN> cache. Any 
+      two locations in memory whose addresses are the same for the lower address 
+      bits will map to the same cache line in a direct mapped cache, causing a 
+      cache conflict.</P>
+      <TABLE cellSpacing=0 cellPadding=3 width="80%" align=right border=0>
+        <TBODY>
+        <TR>
+          <TD vAlign=top><FONT size=1><SUP>8</SUP></FONT></TD>
+          <TD><FONT size=1>The word associativity comes from the fact that 
+            cache lookups work by association – that is, a particular address in 
+            memory is associated with a particular location in the cache (or set 
+            of locations for a set-associative 
+cache).</FONT></TD></TR></TBODY></TABLE>
+      <P><BR clear=all><BR>A cache which allows data to occupy one of two 
+      locations based on its address is called 2-way <SPAN class=b>set 
+      associative</SPAN>. Similarly, a 4-way set-associative cache allows for 4 
+      possible locations for any given piece of data. Set-associative caches 
+      work much like direct mapped ones, except there are several tables, all 
+      indexed in parallel, and the tags from each table are compared to see 
+      whether there is a match for any one of them...</P>
+      <TABLE cellSpacing=0 cellPadding=4 align=center border=0>
+        <TBODY>
+        <TR>
+          <TD align=middle><IMG height=220 alt="" 
+            src="Modern Microprocessors - A 90 Minute Guide!_files/CacheSetAssoc.gif" 
+            width=260 border=0></TD></TR>
+        <TR>
+          <TD align=middle><I>A 4-way set-associative 
+      cache.</I></TD></TR></TBODY></TABLE>
+      <P>Each table, or <SPAN class=b>way</SPAN>, may also have marker bits so 
+      that only the line of the least recently used way is evicted when a new 
+      line is brought in (or perhaps some faster approximation of that 
+      ideal).</P>
+      <P>Usually, set-associative caches are able to avoid the misses that 
+      occasionally occur with direct mapped caches due to unfortunate cache 
+      conflicts. Adding even more ways allows even more conflicts to be avoided. 
+      Unfortunately, the more highly associative a cache is, the slower it is to 
+      access, because there are more comparisons to perform during each access. 
+      Even though the comparisons themselves are performed in parallel, 
+      additional levels of logic are required to select the appropriate hit, if 
+      any, and the cache may also need to update the marker bits appropriately 
+      within each way. More chip area is also required, because relatively more 
+      of the cache's data is consumed by tag information rather than data 
+      blocks, and extra datapaths are needed to access each individual way of 
+      the cache in parallel. Any and all of these factors may negatively affect 
+      access time. Thus, a 2-way set-associative cache is <SPAN class=b>slower 
+      but smarter</SPAN> than a direct mapped cache, with 4-way and 8-way being 
+      slower and smarter again.</P>
+      <P>In most modern processors, the primary on-chip instruction cache is 
+      usually set associative, but the data cache may go either way (direct 
+      mapped in Alpha 21164 &amp; UltraSPARC; 2-way in MIPS R10000, Alpha 21264, 
+      Athlon &amp; PowerPC G5; 4-way in Pentium-Pro/II/III, UltraSPARC-III, 
+      Pentium-4 &amp; Itanium-I/II; 8-way in PowerPC G3/G4, G4e and Pentium-M). 
+      If present, any on-chip L2 cache is usually set associative, but the much 
+      larger external E-cache is normally direct mapped, though not always – the 
+      MIPS R10000, PowerPC G3/G4 and UltraSPARC-III have E-caches which are 
+      2-way set associative, and the PowerPC G4e features an 8-way 
+      set-associative E-cache.</P>
+      <P>The concept of caches also extends up into software systems. For 
+      example, main memory is used to cache the contents of the filesystem to 
+      speed up disk I/O, and web caches (also known as proxy-caches) cache the 
+      contents of remote web servers on a more local server. With respect to 
+      main memory and virtual memory (paging/swapping), it can be thought of as 
+      being a smart, fully associative cache, like the ideal cache mentioned 
+      initially (above). After all, the virtual memory system is managed by the 
+      (hopefully) intelligent software of the operating system kernel.</P>
+      <H2><A name=Memory></A>Memory Bandwidth vs Latency</H2>
+      <P>Since memory is transferred in blocks, and since cache misses are an 
+      urgent "show stopper" type of event with the potential to halt the 
+      processor in its tracks (or at least severely hamper its progress), the 
+      speed of those block transfers from memory to the E-cache is critical. The 
+      transfer rate of a memory system is called its <SPAN 
+      class=b>bandwidth</SPAN>. But how is that different from <SPAN 
+      class=b>latency</SPAN>?</P>
+      <P>A good analogy is a highway... Suppose you want to drive in to the city 
+      from 100 miles away. By doubling the number of lanes, the total number of 
+      cars that can travel per hour (the bandwidth) is doubled, but your own 
+      travel time (the latency) is not reduced. If all you want to do is 
+      increase cars-per-second, then adding more lanes (wider bus) is the 
+      answer, but if you want to reduce the time for a specific car to get from 
+      A to B then you need to do something else – usually either raise the speed 
+      limit (bus &amp; DRAM speed), or reduce the distance, or perhaps build a 
+      regional mall so that people don't need to go to the city as often (a 
+      cache).</P>
+      <P>When it comes to memory systems, there are often subtle trade-offs 
+      between latency and bandwidth. Lower latency designs will be better for 
+      pointer chasing code, such as compilers and database systems, whereas 
+      bandwidth-oriented systems have the advantage for programs with simple 
+      linear access patterns, such as image processing and scientific code.</P>
+      <P>The two major memory technologies of today, standard SDRAM and Rambus 
+      RDRAM, differ slightly in this respect – for any given level of chip 
+      technology, SDRAM should have lower latency but RDRAM should have higher 
+      bandwidth. This is due to the "snake-like" structure of RDRAM memory 
+      systems, which reduce signal reflections by avoiding splitting the wires 
+      to go to each memory module in parallel and instead go "through" each 
+      module in sequence – allowing RDRAM systems to run at higher clock speeds 
+      but with a longer average length to the memory modules.</P>
+      <P>Of course, it's reasonably <SPAN class=b>easy to increase 
+      bandwidth</SPAN> – simply adding more memory banks and making the busses 
+      wider can easily double or quadruple bandwidth. In fact, many high-end 
+      systems do this to increase their performance, but it comes with downsides 
+      as well. In particular, wider busses mean a more expensive motherboard, 
+      restrictions on the way RAM can be added to a system (install in pairs or 
+      groups of 4) and a higher minimum RAM configuration.</P>
+      <P>An example of the two extremes is the difference between Apple's iMac 
+      systems and Sun's high-end SunBlade workstations. The high-end SunBlade 
+      has a 512-bit datapath to RAM, which allows excellent memory bandwidth, 
+      but DIMM's must be installed in groups of 4 and the minimum RAM 
+      configuration is 512 MB (4x128). The iMac, on the other hand, only has a 
+      64-bit wide bus, and consequently has lower memory bandwidth, however 
+      DIMM's can be installed one-at-a-time and the minimum configuration is a 
+      mere 64 MB. These two extremes stem from differences in the markets the 
+      two systems target – few high-end SunBlade users would want less than 512 
+      MB of RAM, whereas a 512 MB minimum configuration might make the iMac too 
+      expensive for many of its target users.</P>
+      <P>Unfortunately, <SPAN class=b>latency is much harder</SPAN> to improve 
+      than bandwidth – as the saying goes: <I>"you can't bribe god"</I>. Even 
+      so, there have been some good improvements in <SPAN 
+      class=b>effective</SPAN> memory latency over the past few years, chiefly 
+      in the form of synchronously-clocked DRAM (SDRAM) which uses the same 
+      clock as the memory bus. The main benefit of SDRAM is that it allows <SPAN 
+      class=b>pipelining of the memory system</SPAN>, because the internal 
+      timing aspects and interleaved structure of SDRAM chip operation are 
+      exposed to the system and can thus be taken advantage of. This reduces 
+      effective latency because it allows a new memory access to be started 
+      before the current one has completed, thereby eliminating the small 
+      amounts of waiting time found in asynchronous DRAM systems, which must 
+      wait for the current access to complete before starting the next (on 
+      average, an asynchronous memory system must wait for the transfer of half 
+      an E-cache block from the previous access before starting a new request, 
+      which is often several bus cycles).</P>
+      <P>In addition to the reduction in effective latency, there is also a 
+      substantial increase in bandwidth, because in an SDRAM memory system 
+      multiple memory requests can be outstanding at any one time, all being 
+      processed in a highly efficient, fully pipelined fashion. Pipelining of 
+      the memory system can have dramatic effects for memory bandwidth – it is 
+      not uncommon for an SDRAM memory system to provide double or triple the 
+      sustained memory bandwidth of an asynchronous memory system, even though 
+      the latency of the SDRAM system is only slightly lower.</P>
+      <P>Will further improvements in DRAM technology be able to hold off the 
+      memory wall for much longer? It will be interesting to watch...</P>
+      <H2><A name=Acknowledgements></A>Acknowledgements</H2>
+      <P>The overall style of this article, particularly with respect to the 
+      style of the processor "instruction flow" and microarchitecture diagrams, 
+      is derived from the combination of a well-known <A 
+      href="http://portal.acm.org/citation.cfm?id=68207&amp;coll=portal&amp;dl=ACM&amp;CFID=11960477&amp;CFTOKEN=47289162">1989 
+      ASPLOS research paper</A> by Norman Jouppi and David Wall, the book <A 
+      href="http://www.amazon.com/exec/obidos/tg/detail/-/1558602798/qid=1062731040/sr=1-13/ref=sr_1_13/104-9713692-1776707?v=glance&amp;s=books">POWER 
+      &amp; PowerPC</A> by Shlomo Weiss and James Smith, and the two very famous 
+      Hennessy/Patterson textbooks <A 
+      href="http://books.elsevier.com/us//mk/us/subindex.asp?maintarget=companions/defaultindividual.asp&amp;isbn=1558605967">Computer 
+      Architecture: A Quantitative Approach</A> and <A 
+      href="http://books.elsevier.com/us//mk/us/subindex.asp?maintarget=companions/defaultindividual.asp&amp;isbn=1558604286">Computer 
+      Organization and Design</A>.</P>
+      <P>There have, of course, been many other presentations of this same 
+      material, and naturally they are all somewhat similar, however the above 
+      four are exceptionally good (in my opinion). To learn more about these 
+      topics, those books are an excellent place to start.</P>
+      <H2><A name=MoreInfo></A>More Detailed Information?</H2>
+      <P>If you want more detail on the specifics of recent processor designs – 
+      and something more insightful than the raw technical manuals – here are a 
+      few good articles...</P>
+      <UL>
+        <LI><A 
+        href="http://www.arstechnica.com/cpu/01q2/p4andg4e/p4andg4e-1.html">The 
+        Pentium 4 and the PowerPC G4e</A> (and <A 
+        href="http://www.arstechnica.com/cpu/01q4/p4andg4e2/p4andg4e2-1.html">Part 
+        II</A>) – a detailed comparison of the very different designs of the 
+        world's two most popular processors. 
+        <LI><A 
+        href="http://www.arstechnica.com/cpu/02q2/ppc970/ppc970-1.html">Inside 
+        the IBM PowerPC 970</A> (and <A 
+        href="http://www.arstechnica.com/cpu/03q1/ppc970/ppc970-0.html">Part 
+        II</A>) – a detailed look at the design of the just-released PowerPC G5, 
+        including comparisons to the G4e and Pentium-4. 
+        <LI><A 
+        href="http://www.arstechnica.com/cpu/3q99/k7_theory/k7-one-1.html">Into 
+        the K7</A> (and <A 
+        href="http://www.arstechnica.com/cpu/3q99/k7_theory/k7-two-1.html">Part 
+        II</A>) – a detailed look at the Athlon, the only competitor to ever 
+        really challenge Intel's dominance in the world of x86 processors. 
+        <LI><A 
+        href="http://www.aceshardware.com/Spades/read.php?article_id=115">The 
+        UltraSPARC III</A> - a brief look at the only mainstream processor to 
+        still use purely in-order execution, along with its other features such 
+        as a wave-pipelined D-cache. 
+        <LI><A href="http://www.aceshardware.com/read.jsp?id=45000183">Itanium: 
+        Titan or Titanic?</A> – a brief look at both the design and the 
+        performance of "the most controversial Intel CPU the industry has ever 
+        seen". 
+        <LI><A href="http://www.aceshardware.com/read.jsp?id=50000319">The 
+        Pentium 4 and Hyper-Threading</A> – some benchmarks for real-world 
+        applications showing where SMT helps and where it doesn't (at least for 
+        the Pentium-4 implementation). 
+        <LI><A href="http://www.aceshardware.com/read.jsp?id=5000172">Ace's 
+        Guide to Memory Technology</A> (and <A 
+        href="http://www.aceshardware.com/read.jsp?id=5000183">Part 2</A> &amp; 
+        <A href="http://www.aceshardware.com/read.jsp?id=50000275">Part 3</A>) – 
+        a detailed look at memory systems, starting simple but going right up to 
+        the latest DDR-II &amp; RDRAM. </LI></UL>
+      <P>And if you want to keep up with the latest news in the world of 
+      microprocessors...</P>
+      <UL>
+        <LI><A href="http://www.aceshardware.com/">Ace's Hardware</A> 
+        <LI><A href="http://www.arstechnica.com/">Ars Technica</A> 
+        <LI><A href="http://www.mdronline.com/mpr/">Microprocessor Report</A> 
+        <LI><A href="http://www.realworldtech.com/">Real World Tech</A> </LI></UL>
+      <P>That should keep you busy!</P></TD>
+    <TD width="10%"></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=4 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD noWrap align=middle><BR>
+      <HR width="50%">
+      <A href="http://www.pattosoft.com.au/index.html">Home</A> | <A 
+      href="http://www.pattosoft.com.au/Software/index.html">Software</A> | <A 
+      href="http://www.pattosoft.com.au/Articles/index.html">Articles</A> | <A 
+      href="http://www.pattosoft.com.au/About/index.html">About</A> | <A 
+      href="http://www.pattosoft.com.au/Search/index.html">Search</A> | <A 
+      href="http://www.pattosoft.com.au/Help/index.html">Help</A></TD></TR>
+  <TR>
+    <TD noWrap align=right><FONT size=1>Copyright © </FONT><FONT 
+      size=1>1991-2003 PattoSoft</FONT><FONT size=1>. All rights reserved.<BR><A 
+      href="http://www.pattosoft.com.au/Legal/TermsOfUse.html">Terms of Use</A> 
+      | <A href="http://www.pattosoft.com.au/Legal/Privacy.html">Privacy 
+      Policy</A> | <A href="http://www.pattosoft.com.au/Legal/index.html">Legal 
+      Information</A></FONT></TD></TR></TBODY></TABLE></BODY></HTML>

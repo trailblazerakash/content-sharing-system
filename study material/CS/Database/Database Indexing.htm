@@ -1,0 +1,596 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=GB2312">
+<title>8.0</title>
+<link href="Database%20Indexing_files/style.css" rel="stylesheet" type="text/css">
+<script type="text/JavaScript">
+<!--
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+  window.open(theURL,winName,features);
+}
+//-->
+</script>
+<style type="text/css">
+<!--
+.style107 {font-size: 16px}
+-->
+</style>
+</head>
+<body onload="MM_openBrWindow('images/dzkj_r3_c38.jpg','chapter','width=129,height=63')">
+<div>
+  <h1 class="STYLE101" align="center"><img src="Database%20Indexing_files/chapter.gif" height="41" width="45">Chapter8　Indexing </h1>
+</div>
+<div class="tab" align="center">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="96%">
+  <tbody><tr>
+    <td colspan="3">
+     <div class="big STYLE103" align="justify">
+          <strong><br>
+          <span class="STYLE106">Chapter Outline</span> </strong>　　<br>
+          ●Disk Storage Devices<br> ●Files of Records<br>
+		  ●Operations on Files
+		  <br>
+		  ●Unordered Files
+		  <br>Ordered Files<br>
+		  ●Hashed Files
+		  <br>
+		  　　　　Dynamic and Extendible Hashing Techniques 
+		  <br>
+		  ●RAID Technology
+		  <br><br>
+		  <span class="STYLE106">Disk Storage Devices</span>		  <br>
+		  <br>
+		  Because a track usually contains a large amount of information, it is divided into smaller blocks or sectors. 
+		  <br><br>
+		  The division of a track into sectors is hard-coded on the disk 
+surface and cannot be changed. One type of sector organization calls a 
+portion of a track that subtends a fixed angle at the center as a 
+sector.
+
+
+		  <br><br>
+		  A track is divided into blocks. The block size B is fixed for each 
+system. Typical block sizes range from B=512 bytes to B=4096 bytes. 
+Whole blocks are transferred between disk and main memory for 
+processing.
+		  <br><br>
+		  <span class="STYLE106">Disk Storage Devices (cont.)</span>		  <br><br>
+		  <img src="Database%20Indexing_files/8-0p1.JPG" height="290" width="525">		  <br>
+		  <br><br>
+		  <span class="STYLE106">Disk Storage Devices (cont.)		  </span><br>
+<br>
+　　A read-write  head moves to the track that contains the block to be 
+transferred. Disk rotation moves the block under the read-write head for
+ reading or writing.
+<br>
+　　A physical disk block (hardware) address consists of a cylinder number
+ (imaginery collection of tracks of same radius from all recoreded 
+surfaces), the track number or surface number (within the cylinder), and
+ block number (within track).
+Reading or writing a disk block is time consuming because of the seek 
+time s and rotational delay (latency) rd.
+
+<br>
+　　Double buffering can be used to speed up the transfer of contiguous disk blocks.
+
+<br><br>
+<strong class="STYLE106">Disk Storage Devices (cont.)
+</strong><br>
+<img src="Database%20Indexing_files/8-0p2.JPG" height="345" width="421"><br>
+<br>
+<strong class="STYLE106">Typical Disk Parameters
+</strong><br>
+<img src="Database%20Indexing_files/8-0p3.JPG" height="542" width="520"><br>
+<br>
+<strong class="STYLE106">Records</strong><br>
+<br>
+Fixed and variable length records
+<br>
+Records contain fields which have values of a particular type (e.g., amount, date, time, age)
+
+<br>
+Fields themselves may be fixed length or variable length
+<br>
+Variable length fields can be mixed into one record: separator 
+characters or length fields are needed so that the record can be 
+“parsed”. 
+<br><br>
+<span class="STYLE106">Blocking
+</span><br>
+<br>
+Blocking: refers to storing a number of records in one blo ck on the disk.
+<br>
+Blocking factor (bfr) refers to the number of records per block. 
+
+<br>
+There may be empty space in a block if an integral number of records do not fit in one block.
+<br>
+Spanned Records: refer to records that exceed the size of one or more blocks and hence span a number of blocks.<br><br>
+<span class="STYLE106">Files of Records
+</span><br>
+<br>
+A file is a sequence  of records, where each record is a collection of data values (or data items).
+
+
+<br><br>
+A file descriptor  (or file header ) includes information that describes
+ the file, such as the field names  and their data types, and the 
+addresses of the file blocks on disk.
+<br><br>
+Records are stored on disk blocks. The blocking factor bfr for a file is
+ the (average) number of file records stored in a disk block.
+<br>
+<br>
+A file can have fixed-length  records or variable-length  records.
+<br>
+<br>
+<span class="STYLE106">Files of Records (cont.)
+</span><br>
+<br>
+File records can be unspanned  (no record can span two blocks) or spanned  (a record can be stored in more than one block).
+<br>
+The physical disk blocks that are allocated to hold the records of a file can be contiguous, linked, or indexed.
+
+<br>
+In a file of fixed-length records, all records have the same format. Usually, unspanned blocking is used with such files.
+<br>
+Files of variable-length records require additional information to be 
+stored in each record, such as separator characters  and field types. 
+Usually spanned blocking is used with such files.<br><br>
+<span class="STYLE106">Operation on Files</span><br>
+<br>
+Typical file operations include:
+<br><br>
+OPEN: Readies the file for access, and associates a pointer that will refer to a current  file record at each point in time.
+<br><br>
+FIND: Searches for the first file record that satisfies a certain condition, and makes it the current file record.
+<br><br>
+FINDNEXT: Searches for the next file record (from the current record) 
+that satisfies a certain condition, and makes it the current file 
+record.
+<br><br>
+READ: Reads the current file record into a program variable.
+<br><br>
+INSERT: Inserts a new record into the file, and makes it the current file record.<br><br>
+<span class="STYLE106">Operation on Files (cont.)</span><br>
+<br>
+DELETE: Removes the current file record from the file, usually by marking the record to indicate that it is no longer valid.
+<br><br>
+MODIFY: Changes the values of some fields of the current file record.
+<br><br>
+CLOSE: Terminates access to the file.
+<br><br>
+REORGANIZE: Reorganizes the file records. For example, the records 
+marked deleted are physically removed from the file or a new 
+organization of the file records is created.
+
+<br><br>
+READ_ORDERED: Read the file blocks in order of a specific field of the file.<br><br>
+<span class="STYLE106">Unordered Files</span><br>
+<br>
+Also called a heap  or a pile  file.
+
+
+<br><br>
+New records are inserted at the end of the file.<br><br>
+
+To search for a record, a linear search  through the file records is 
+necessary. This requires reading and searching half the file blocks on 
+the average, and is hence quite expensive.<br><br>
+
+Record insertion is quite efficient.<br><br>
+Reading the records in order of a particular field requires sorting the file records. 
+<br><br>
+<span class="STYLE106">Ordered Files
+
+</span><br>
+<br>
+
+Also called a sequential file.<br><br>
+File records are kept sorted by the values of an ordering field.<br><br>
+Insertion is expensive: records must be inserted in the correct order. 
+It is common to keep a separate unordered overflow  (or transaction ) 
+file for new records to improve insertion efficiency; this is 
+periodically merged with the main ordered file.<br><br>
+A binary search  can be used to search for a record on its ordering 
+field value. This requires reading and searching log2 of the file blocks
+ on the average, an improvement over linear search.<br><br>
+Reading the records in order of the ordering field is quite efficient.<br><br>
+
+Ordered Files (cont.)<br><br>
+<img src="Database%20Indexing_files/8-0p4.JPG" height="471" width="350"><br><br>
+
+<span class="STYLE106">Average Access Times
+</span><br>
+<br>
+
+The following table shows the average access time to access a specific record for a given type of file
+
+<br>
+<img src="Database%20Indexing_files/8-0p5.JPG" height="140" width="523"><br>
+<br>
+<span class="STYLE106">Hashed Files
+</span><br>
+<br>
+
+Hashing for disk files is called External Hashing<br><br> 
+The file blocks are divided into M equal-sized buckets, numbered 
+bucket0, bucket1, ..., bucket M-1. Typically, a bucket corresponds to 
+one (or a fixed number of) disk block.<br><br> 
+One of the file fields is designated to be the hash key of the file.<br><br> 
+The record with hash key value K is stored in bucket i, where i=h(K), and h is the hashing function.<br><br> 
+Search is very efficient on the hash key.<br><br> 
+Collisions occur when a new record hashes to a bucket that is already 
+full. An overflow file is kept for storing such records. Overflow 
+records that hash to each bucket can be linked together. <br><br> 
+<span class="STYLE106">Hashed Files (cont.)
+</span><br>
+<br>
+There are numerous methods for collision resolution, including the 
+ following:<br><br>
+Open addressing: Proceeding from the occupied position specified by the 
+hash address, the program checks the subsequent positions in order until
+ an unused (empty) position is found. <br><br>
+
+Chaining: For this method, various overflow locations are kept, usually 
+by extending the array with a number of overflow positions. In addition,
+ a pointer field is added to each record location. A collision is 
+resolved by placing the new record in an unused overflow location and 
+setting the pointer of the occupied hash address location to the address
+ of that overflow location. <br><br>
+
+Multiple hashing: The program applies a second hash function if the 
+first results in a collision. If another collision results, the program 
+uses open addressing or applies a third hash function and then uses open
+ addressing if necessary.<br><br>
+
+Hashed Files (cont.)
+<br>
+<img src="Database%20Indexing_files/8-0p6.JPG" height="251" width="538"><br>
+<br>
+<span class="STYLE106">Hashed Files (cont.)
+</span><br>
+<br>
+To reduce overflow records, a hash file is typically kept 70-80% full.<br><br>
+The hash function h should distribute the records uniformly among the 
+buckets; otherwise, search time will be increased because many overflow 
+records will exist.<br><br>
+Main disadvantages of static external hashing:
+		Fixed number of buckets M is a problem if the number of records in the file grows or shrinks.
+	Ordered access on the hash key is quite inefficient (requires  sorting the records).
+<br><br><br>
+Hashed Files - Overflow handling<br>
+<img src="Database%20Indexing_files/8-0p7.JPG" height="336" width="483"><br><br>
+<span class="STYLE106">Dynamic And Extendible Hashed Files
+
+</span><br>
+<br>
+<strong>Dynamic and Extendible Hashing Techniques</strong><br><br>
+
+Hashing techniques are adapted to allow the dynamic growth and shrinking of the number of file records.<br><br>
+
+These techniques include the following: dynamic hashing , extendible hashing , and linear hashing .<br><br>
+
+Both dynamic and extendible hashing use the binary representation  of 
+the hash value h(K) in order to access a directory. In dynamic hashing 
+the directory is a binary tree. In extendible hashing the directory is 
+an array of size 2d where d is called the global depth. <br><br>
+<br><br>
+<span class="STYLE106">Dynamic And Extendible Hashing (cont.)
+
+</span><br>
+<br>
+The directories can be stored on disk, and they expand or shrink 
+dynamically. Directory entries point to the disk blocks that contain the
+ stored records.<br><br>
+
+An insertion in a disk block that is full causes the block to split into
+ two blocks and the records are redistributed among the two blocks. The 
+directory is updated appropriately.<br><br>
+
+Dynamic and extendible hashing do not require an overflow area. <br><br>
+
+Linear hashing does require an overflow area but does not use a 
+directory. Blocks are split in linear order  as the file expands.<br><br>
+
+Extendible Hashing
+<br>
+<img src="Database%20Indexing_files/8-0p8.JPG" height="477" width="574"><br>
+<br>
+<span class="STYLE106">Parallelizing Disk Access using RAID Technology.
+</span><br>
+<br>
+
+Secondary storage technology must take steps to keep up in performance and reliability with processor technology.<br><br>
+
+A major advance in secondary storage technology is represented by the development of <strong>RAID</strong>, which originally stood for <strong>Redundant Arrays of Inexpensive Disks. <br>
+</strong><br>
+
+The main goal of RAID is to even out the widely different rates of 
+performance improvement of disks against those in memory and 
+microprocessors.<br><br>
+
+<span class="STYLE106">RAID Technology (cont.)
+</span><br>
+<br>
+A natural solution is a large array of small independent disks acting as
+ a single higher-performance logical disk. A concept called <strong>data striping</strong> is used, which utilizes parallelism to improve disk performance.<br><br>
+Data striping distributes data transparently over multiple disks to make them appear as a single large, fast disk. 
+<br> 
+<img src="Database%20Indexing_files/8-0p9.JPG" height="111" width="537"><br><br>
+
+RAID Technology (cont.)
+<br><br>
+Different raid organizations were defined based on different 
+combinations of the two factors of granularity of data interleaving 
+(striping) and pattern used to compute redundant information.<br><br>
+ <span class="STYLE106">Raid level 0 has no redundant data and hence has the best write performance.<br>
+ <br>
+ Raid level 1 uses mirrored disks.<br>
+ <br>
+ Raid level 2 uses memory-style redundancy by using Hamming codes, which
+ contain parity bits for distinct overlapping subsets of components. 
+Level 2 includes both error detection and correction.</span><br>
+ <br>
+ Raid level 3 uses a single parity disk relying on the disk controller to figure out which disk has failed.<br><br>
+ Raid Levels 4 and 5 use block-level data striping, with level 5 distributing data and parity information across all disks. <br><br>
+ Raid level 6 applies the so-called P + Q redundancy scheme using 
+Reed-Soloman codes to protect against up to two disk failures by using 
+just two redundant disks.  <br><br>
+
+ <span class="STYLE106">Use of RAID Technology
+ </span><br>
+<br>
+
+Different raid organizations are being used under different situations<br><br>
+ <span class="STYLE106">Raid level 1 (mirrored disks)is the easiest for rebuild of a disk from other disks<br>
+　　 <span class="style107">It is used for critical applications like logs</span><br>
+<br>
+ Raid level 2 uses memory-style redundancy by using Hamming codes, which
+ contain parity bits for distinct overlapping subsets of components. 
+Level 2 includes both error detection and correction.</span><br><br>
+ Raid level 3 ( single parity disks relying on the disk controller to 
+figure out which disk has failed) and level 5 (block-level data 
+striping) are preferred for Large volume storage, with level 3 giving 
+higher transfer rates.<br><br>
+ Most popular uses of the RAID technology currently are: Level 0 (with 
+striping), Level 1 (with mirroring) and Level 5 with an extra drive for 
+parity.<br><br>
+ Design Decisions for RAID include – level of RAID, number of disks, 
+choice of parity schemes, and grouping of disks for block-level 
+striping.  <br><br>
+
+ <span class="STYLE106">Use of RAID Technology (cont.)</span><br>
+<img src="Database%20Indexing_files/8-0p10.JPG" height="457" width="371"><br><br>
+<span class="STYLE106">Trends in Disk Technology</span><br><br>
+<img src="Database%20Indexing_files/8-0p11.JPG" height="229" width="524"><br><br>
+<span class="STYLE106">Storage Area Networks</span><br>
+<br>
+The demand for higher storage has risen considerably in recent times.<br><br>
+Organizations have  a need to move from a static fixed data center 
+oriented operation to a more flexible and dynamic infrastructure for 
+information processing.<br><br>
+Thus they are moving to a concept of Storage Area Networks (SANs). In a 
+SAN, online storage peripherals are configured as nodes on a high-speed 
+network and can be attached and detached from servers in a very flexible
+ manner.<br><br>
+This allows storage systems to be placed at longer distances from the 
+servers and provide different performance and connectivity options.<br><br>
+<span class="STYLE106">Storage Area Networks (contd.)
+</span><br>
+<br>
+<strong>Advantages of SANs are:</strong><br><br>
+
+　　●Flexible many-to-many connectivity among servers and storage devices using fiber channel hubs and switches.<br><br>
+　　●Up to 10km separation between a server and a storage system using appropriate fiber optic cables.<br><br>
+　　●Better isolation capabilities allowing nondisruptive addition of new peripherals and servers.<br><br>
+
+SANs face the problem of combining storage options from multiple vendors
+ and dealing with evolving standards of storage management software and 
+hardware.<br><br>
+　　　　　　　　　　　　　　　　　　Db8.2.ppt<br><br>
+<span class="STYLE106">Indexing Structures for Files</span><br>
+<br>
+<strong>Outline</strong><br><br>
+Types of Single-level Ordered Indexes<br><br>
+　　●Primary Indexes<br>
+　　●Clustering Indexes<br>
+　　●Secondary Indexes<br>
+Multilevel Indexes<br><br>
+Dynamic Multilevel Indexes Using B-Trees      and B+-Trees<br><br>
+Indexes on Multiple Keys<br><br>
+<span class="STYLE106">Indexes as Access Paths</span><br>
+<br>
+●A single-level index is an auxiliary file that makes it more efficient to search for a record in the data file.<br><br>
+
+●The index is usually specified on one field of the file (although it could be specified on several fields)<br><br>
+
+●One form of an index is a file of entries  <span class="STYLE106"><strong>＜ field value, pointer to record ＞</strong></span> , which is ordered by field value<br><br>
+
+●The index is called an access path on the field.<br><br>
+<span class="STYLE106">Indexes as Access Paths (contd.)</span><br>
+<br>
+●The index file usually occupies considerably less disk blocks than the data file because its entries are much smaller<br><br>
+
+●A binary search on the index yields a pointer to the file record<br><br>
+
+●Indexes can also be characterized as dense or sparse.<br><br> 
+
+　　●A <span class="STYLE106">dense index</span> has an index entry for every search key value (and hence every record) in the data file. <br><br>
+　　●A <span class="STYLE106">sparse</span> (or<span class="STYLE106"> nondense</span>) index, on the other hand, has index entries for only some of the search values <br><br>
+<span class="STYLE106">Indexes as Access Paths (contd.)</span><br>
+<br>
+
+Example: Given the following data file:
+	EMPLOYEE(NAME, SSN, ADDRESS, JOB, SAL, ... )<br>
+	Suppose that:<br>
+	record size R=150 bytes<br>
+	block size B=512 bytes<br>
+	r=30000 records<br>
+
+	Then, we get:<br>
+	blocking factor Bfr= B div R= 512 div 150= 3 records/block<br>
+	number of file blocks b= (r/Bfr)= (30000/3)= 10000 blocks<br>
+	
+	For an index on the SSN field, assume the field size VSSN=9 bytes,<br>
+	assume the record pointer size PR=7 bytes. Then:<br>
+	index entry size RI=(VSSN+ PR)=(9+7)=16 bytes<br>
+	index blocking factor BfrI= B div RI= 512 div 16= 32 entries/block<br>
+	number of index blocks b= (r/ BfrI)= (30000/32)= 938 blocks<br>
+	binary search needs log2bI= log2938= 10 block accesses<br>
+
+	This is compared to an average linear search cost of:<br>
+		(b/2)= 30000/2= 15000 block accesses<br>
+	If the file records are ordered, the binary search cost would be:<br>
+		 log2b=  log230000= 15 block accesses
+<br><br>
+<span class="STYLE106">Types of Single-Level Indexes
+</span><br>
+<br>
+<strong>Primary Index</strong><br>
+
+　　●Defined on an ordered data file<br>
+
+　　●The data file is ordered on a key field<br>
+
+　　●Includes one index entry for each block  in the data file; the index 
+entry has the key field value for the first record  in the block, which 
+is called the block anchor<br>
+
+　　●A similar scheme can use the last record  in a block.<br>
+
+　　●A primary index is a nondense (sparse) index, since it includes an 
+entry for each disk block of the data file and the keys of its anchor 
+record rather than for every search value.<br>
+<br>
+<img src="Database%20Indexing_files/8-0p12.JPG" height="473" width="561"><br><br>
+FIGURE 14.1Primary index on the ordering key field of the file shown in Figure 13.7.
+<br><br>
+<span class="STYLE106">Types of Single-Level Indexes</span><br>
+<br>
+<strong>Clustering Index</strong><br><br>
+
+　　●Defined on an ordered data file<br>
+
+　　●The data file is ordered on a non-key field unlike primary index, 
+which requires that the ordering field of the data file have a distinct 
+value for each record.<br>
+
+　　●Includes one index entry for each distinct value  of the field; the 
+index entry points to the first data block that contains records with 
+that field value.<br>
+
+　　●It is another example of nondense index where Insertion and Deletion is relatively straightforward with a clustering index.<br>
+<br>
+<img src="Database%20Indexing_files/8-0p13.JPG" height="487" width="561"><br><br>
+FIGURE 14.2A clustering index on the DEPTNUMBER ordering nonkey field of an EMPLOYEE file.<br><br>
+<img src="Database%20Indexing_files/8-0p14.JPG" height="512" width="556"><br><br>
+FIGURE 14.3Clustering index with a separate block cluster for each 
+group of records that share the same value for the clustering field.
+<br><br>
+<span class="STYLE106">Types of Single-Level Indexes</span><br>
+<br>
+<strong>●Secondary Index</strong><br><br>
+
+　　●A secondary index provides a secondary means of accessing a file for which some primary access already exists.<br>
+
+　　●The secondary index may be on a field which is a candidate key and 
+has a unique value in every record, or a nonkey with duplicate values.<br>
+
+　　●The index is an ordered file with two fields.<br>
+
+　　　　● The first field is of the same data type as some nonordering field of the data file that is an indexing field. <br>
+　　　　● The second field is either a block pointer or a record pointer. 
+There can be many secondary indexes (and hence, indexing fields) for the
+ same file.<br>
+
+　　●Includes one entry for each record  in the data file; hence, it is a dense index<br>
+<br>
+<img src="Database%20Indexing_files/8-0p15.JPG" height="456" width="400"><br><br>
+FIGURE 14.4A dense secondary index (with block pointers) on a nonordering key field of a file.<br><br>
+<img src="Database%20Indexing_files/8-0p16.JPG" height="454" width="525"><br><br>
+FIGURE 14.5A secondary index (with recored pointers) on a nonkey field 
+implemented using one level of indirection so that index entries are of 
+fixed length and have unique field values.<br>
+<br>
+
+<img src="Database%20Indexing_files/8-0p17.JPG" height="285" width="621"><br>
+<br>
+<span class="STYLE106">Multi-Level Indexes 
+</span><br>
+<br>
+Because a single-level index is an ordered file, we can create a primary
+ index to the index itself ; in this case, the original index file is 
+called the first-level index  and the index to the index is called the 
+second-level index.<br><br>
+
+We can repeat the process, creating a third, fourth, ..., top level until all entries of the top level  fit in one disk block<br><br>
+
+A multi-level index can be created for any type of first-level index 
+(primary, secondary, clustering) as long as the first-level index 
+consists of more than one  disk block<br><br>
+<img src="Database%20Indexing_files/8-0p18.JPG" height="471" width="495"><br><br>
+FIGURE 14.6A two-level primary index resembling ISAM (Indexed Sequential Access Method) organization.
+<br><br>
+<span class="STYLE106">Multi-Level Indexes 
+</span><br>
+<br>
+Such a multi-level index is a form of search tree ; however, insertion 
+and deletion of new index entries is a severe problem because every 
+level of the index is an ordered file.<br><br>
+<img src="Database%20Indexing_files/8-0p19.JPG" height="134" width="534"><br><br>
+FIGURE 14.8A node in a search tree with pointers to subtrees below it.<br><br>
+<img src="Database%20Indexing_files/8-0p20.JPG" height="253" width="619"><br><br>
+FIGURE 14.9    A search tree of order p = 3.
+<br><br>
+<span class="STYLE106">Dynamic Multilevel Indexes Using B-Trees      and B+-Trees</span><br>
+<br>
+Because of the insertion and deletion problem, most multi-level indexes 
+use B-tree or B+-tree data structures, which leave space in each tree 
+node (disk block) to allow for new index entries<br><br>
+
+These data structures are variations of search trees that allow efficient insertion and deletion of new search values.<br><br>
+
+In B-Tree and B+-Tree data structures, each node corresponds to a disk block<br><br>
+
+Each node is kept between half-full and completely full<br><br>
+
+An insertion into a node that is not full is quite efficient; if a node is full the insertion causes a split into two nodes<br><br>
+
+Splitting may propagate to other tree levels<br><br>
+
+A deletion is quite efficient if a node does not become less than half full<br><br>
+
+If a deletion causes a node to become less than half full, it must be merged with neighboring nodes<br>
+<span class="STYLE106"><br>
+Difference between B-tree and B+-tree
+</span><br>
+<br>
+ In a B-tree, pointers to data records exist at all levels of the treebr/&gt;<br>
+
+ In a B+-tree, all pointers to data records exists at the leaf-level nodesbr/&gt;<br>
+
+ A B+-tree can have less levels (or higher capacity of search values) than the corresponding B-treebr/&gt;<br>
+<br>
+<img src="Database%20Indexing_files/8-0p21.JPG" height="302" width="589"><br><br>
+FIGURE 14.10B-tree structures. (a) A node in a B-tree with q – 1 search
+  values. (b) A B-tree of order p = 3. The values were inserted in the 
+order 8, 5, 1, 7, 3, 12, 9, 6.<br><br>
+<img src="Database%20Indexing_files/8-0p22.JPG" height="291" width="581"><br><br>
+FIGURE 14.11The nodes of a B+-tree. (a) Internal node of a B+-tree with
+ q –1 search values. (b) Leaf node of a B+-tree with q – 1 search values
+ and q – 1 data pointers.<br><br>
+<img src="Database%20Indexing_files/8-0p23.JPG" height="547" width="380"><br><br>
+FIGURE 14.12An example of insertion in a B+-tree with q = 3 and pleaf = 2.<br><br>
+<img src="Database%20Indexing_files/8-0p24.JPG" height="511" width="372"><br><br>
+FIGURE 14.13An example of deletion from a B+-tree.
+
+　　
+</div>
+    <br>	
+	</td>
+  </tr>
+</tbody></table></div>
+
+
+</body></html>

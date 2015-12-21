@@ -1,0 +1,28 @@
+@charset "utf-8";
+/* CSS Document */
+
+#nav{padding:20px;
+margin:5px,5px,25px,5px
+float:left;}
+a:link,a:visited{text-decoration:none;
+color:#000;
+}
+a:viisted{font-color:#009;
+}
+#aside{
+	
+	width:260px;
+	float:right;
+	border-left:5px dashed #aaa;;
+	padding-left::25px;
+	margin-left:5px;
+	}
+#footer{alignment-adjust:middle;
+width:940px;
+height:60px;
+background-color:#CCC;
+font-size:10px;
+font:Georgia, "Times New Roman", Times, serif;
+font-weight:bold;
+padding-bottom:10px;
+margin-bottom:auto;}

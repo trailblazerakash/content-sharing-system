@@ -1,0 +1,725 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0051)http://www.cs.clemson.edu/~mark/464/pipelining.html --><HTML><HEAD><TITLE>Pipelining Review -- Mark Smotherman</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<STYLE TEXT="TEXT/CSS">BODY {
+	BACKGROUND: white; MARGIN-LEFT: 5%; COLOR: black; MARGIN-RIGHT: 5%
+}
+HR {
+	MARGIN-LEFT: -4%
+}
+H1 {
+	MARGIN-LEFT: -4%
+}
+H2 {
+	MARGIN-LEFT: -4%
+}
+H3 {
+	MARGIN-LEFT: -4%
+}
+H4 {
+	MARGIN-LEFT: -4%
+}
+HR {
+	MARGIN-RIGHT: -4%
+}
+EM {
+	COLOR: green
+}
+CITE {
+	COLOR: brown
+}
+</STYLE>
+
+<META content="MSHTML 6.00.2900.2180" name=GENERATOR></HEAD>
+<BODY>
+<P><B>Clemson University <BR>CPSC 464/664 Lecture Notes <BR>Fall 2003 <BR>Mark 
+Smotherman </B>
+<P>
+<HR>
+
+<H2>Pipelining Review (background material from Appendix A)</H2>
+<P>
+<OL type=I>
+  <LI>Hardware review 
+  <P>
+  <OL type=A>
+    <LI>datapath - registers, ALU, shifters, internal busses, and control points 
+
+    <P></P>
+    <LI>control signals activate control points to allow register contents to be 
+    copied onto busses, to select ALU/shifter operations, and to allow values on 
+    busses to replace register contents (called register transfers or 
+    micro-operations) 
+    <P></P>
+    <LI>instruction fetch/execute cycle governed by activation of control 
+    signals in appropriate sequence 
+    <OL>
+      <LI>IF - memory access for instruction fetch (can update PC in parallel) 
+      <LI>ID - instruction decode (register fetch in parallel if fixed-field 
+      format) 
+      <LI>EA - effective address calculation (possible memory access or register 
+      fetch) 
+      <LI>OF - operand fetch (memory access or register fetch) 
+      <LI>EX - execute 
+      <LI>OS - operand store (memory access or register write back) 
+      <LI>IC - if enabled, check for interrupts </LI></OL>
+    <P></P>
+    <LI>load/store architectures combine address calculation with execution and 
+    allow only one data memory access per inst. (IF, ID/RF, EX/EA, OF/OS, WB) -- 
+    thus no structural hazards for competing data accesses by EA (when indirect 
+    addressing is being done), OF, and OS 
+    <P></P>
+    <LI>hardwired control unit 
+    <OL>
+      <LI>input = clock phases or state, IR, condition codes; output = control 
+      signals 
+      <LI>control signals are sums of products (e.g. Rin = ADD*T3 + SUB*T3 + 
+      ...) 
+      <LI>can use gates to generate control signals (random logic) or PLA 
+    </LI></OL>
+    <P></P>
+    <LI>microprogrammed control (see <A 
+    href="http://www.cs.clemson.edu/~mark/uprog.html">http://www.cs.clemson.edu/~mark/uprog.html</A>) 
+
+    <OL>
+      <LI>package all control signals for a given clock cycle into a 
+      microinstruction (relatively unencoded format called a "horizontal" 
+      uinst.; highly encoded format called a "vertical" uinst.) 
+      <LI>microinstruction sequencing can be similar to machine language 
+      sequencing 
+      <LI>instruction decode by using the opcode as index into a jump table 
+      <LI>parallelism by packing several datapath operations in the same 
+      microinstruction 
+      <LI>microprogramming provides flexibility - updates to change or correct 
+      instruction set 
+      <LI>in 1970 control stores were 10 times faster than main memory - this 
+      made microprogramming attractive; now, icaches make it less attractive 
+      (RISC can be seen as "compiling to microcode") </LI></OL>
+    <P></P>
+    <LI><A href="http://www.cs.clemson.edu/~mark/464/control.txt">now most 
+    designs are cache-based and have gone back to hardwired control</A> 
+    <P></P>
+    <LI>minimize CPI by minimizing the number of clocks/states/microinstructions 
+    in execution path 
+    <P></P>
+    <LI>minimize clock cycle time by redesigning critical paths in execution 
+    path </LI></OL>
+  <P></P>
+  <LI>Technology changes 
+  <P>
+  <TABLE border=1>
+    <TBODY>
+    <TR>
+      <TH></TH>
+      <TH>1995</TH>
+      <TH>2005</TH></TR>
+    <TR align=middle>
+      <TH align=left>memory latency</TH>
+      <TD>low (50 cycles)</TD>
+      <TD>high (100-500 cycles)</TD></TR>
+    <TR align=middle>
+      <TH align=left>L1 cache latency</TH>
+      <TD>low (1 cycle)</TD>
+      <TD>multi-cycle (2-3 cycles)</TD></TR>
+    <TR align=middle>
+      <TH align=left>pipelines</TH>
+      <TD>short (5 stages)</TD>
+      <TD>long (20-50 stages)</TD></TR>
+    <TR align=middle>
+      <TH align=left>operand forwarding paths</TH>
+      <TD>full network</TD>
+      <TD>clustered subnets, multi-cycle</TD></TR></TBODY></TABLE>
+  <P></P>
+  <LI>Pipelining 
+  <P>
+  <OL type=A>
+    <LI>exploits parallelism of instruction execution stages to improve 
+    throughput 
+    <OL>
+      <LI>divide instruction into pipe stages, speedup in best case approx. 
+      equal to the # of pipe stages 
+      <LI>goals 
+      <OL type=a>
+        <LI>balanced stages (each takes approx. same time since slowest stage 
+        limits clock rate) 
+        <LI>fixed ordering of stages (each instruction does approx. the same 
+        work and follows the same path through the stages, no empty stages if 
+        possible) 
+        <LI>independent stages (so stages don't need to stall waiting for 
+        values) </LI></OL></LI></OL>
+    <P></P>
+    <LI>RISC caters to pipelining 
+    <OL>
+      <LI>uniform instruction length (for ease of determining and fetching next 
+      inst.) 
+      <LI>simple, fixed-field instruction formats (for ease of decoding and 
+      overlapping reg. fetch with decode) 
+      <LI>load/store architecture (so at most one memory data access per inst.) 
+      <LI>simple, single-cycle operations (for single execute stage) 
+      <LI>simple addressing modes (esp. no indirect addressing) 
+      <LI>explicit specification of resources (for ease of dependency checking) 
+      <LI>one result per instruction (avoid condition code as side-effect) 
+      <LI>CISC note: pipeline frequent-case, RISC-like inst. subset; trap and 
+      emulate on other insts. (MicroVAX-32, Motorola ColdFire) </LI></OL>
+    <P></P>
+    <LI>example pipeline for RISC architecture <PRE>  IF | ID | EX | DC | WB
+</PRE>
+    <OL>
+      <LI>IF - instruction fetch and update PC 
+      <LI>ID - instruction decode and read operands from register file 
+      (fixed-field decoding) 
+      <LI>EX - execute (alu inst.) or calculate effective address for memory 
+      access (ld/st) 
+      <LI>DC - data cache access (ld/st inst., will be empty for alu inst.) 
+      <LI>WB - write back results to register file (for ld/alu inst., empty for 
+      st inst.) </LI></OL>
+    <P></P>
+    <LI>resource requirements <PRE>                 .--.
+  IF  ID  EX  DC |WB|
+      IF  ID  EX |DC| WB
+          IF  ID |EX| DC  WB
+              IF |ID| EX  DC  WB
+                 |IF| ID  EX  DC  WB
+                 `--'
+</PRE>
+    <OL>
+      <LI>IF+DC =&gt; 2 memory access ports (Harvard architecture - icache and 
+      dcache) 
+      <LI>IF+EX =&gt; PC needs own incrementer since EX must use ALU 
+      <LI>ID+WB =&gt; register file needs two read ports and one write port 
+    </LI></OL>
+    <P></P>
+    <LI>hazards - conditions that prevent the next instruction from executing 
+    <P>
+    <OL>
+      <LI>hazards reduce ability to complete one instruction each cycle, and 
+      thus speedup scales as: pipeline depth / (1 + avg. pipeline stall cycles) 
+      <P></P>
+      <LI>structural hazards - due to resource conflicts (two insts. need to use 
+      same unit) 
+      <OL type=a>
+        <LI>soln. 1: stall second instruction - increases CPI so do this only 
+        for rare events 
+        <LI>soln. 2: duplicate the resource (e.g., icache + dcache) - can be 
+        costly 
+        <LI>avoid structural hazard if each instruction uses a resource at most 
+        once, always in the same pipeline stage, and for only one cycle =&gt; 
+        can do this for RISCs but not all CISCs </LI></OL>
+      <P></P>
+      <LI>data hazards - due to operand conflicts (two insts. will access same 
+      operand location; must appear that insts. are executed sequentially) 
+      <P>
+      <OL type=a>
+        <LI>true data dependency - RAW - read must happen after write (or read 
+        gets the wrong old value) 
+        <P>
+        <OL type=i>
+          <LI>soln. 1: detect and stall, e.g., register scoreboard 
+          <UL>
+            <LI>vector of "busy" bits, one per register 
+            <LI>stall instruction in ID until all source registers are free 
+            <LI>set busy bit of destination register for instruction exiting ID 
+            <LI>reset busy bit of destination register after writing in WB 
+          </LI></UL><PRE>  ld   r2,0(r1)  IF ID.EX DC WB.
+         \            .        .
+  dadd r4,r2,r3     IF.-- -- --.ID EX DC WB
+                      .        .
+                     set-----reset
+                       r2 busy
+</PRE>
+          <LI>soln. 2: detect and stall, but forward through the register file 
+          <UL>
+            <LI>clock phase 1: WB writes into register file 
+            <LI>clock phase 2: ID reads from register file </LI></UL><PRE>  ld   r2,0(r1)  IF ID.EX DC WB
+         \            .      \
+  dadd r4,r2,r3     IF.-- -- ID EX DC WB
+                      .      .
+                     set---reset
+                       r2 busy
+</PRE>
+          <LI>soln. 3: detect and forward the data from an earlier instruction 
+          <UL>
+            <LI>add forwarding paths to bring values from EX/MEM and MEM/WB 
+            latches to muxes in front of the A and B legs of the ALU 
+            <LI>note that loads still have an inherent load-use penalty </LI></UL><PRE>  ld   r2,0(r1)  IF ID EX DC WB
+         \                  \
+  dadd r4,r2,r3     IF -- ID EX DC WB
+         \                     \
+  dsub r6,r4,r5        -- IF ID EX DC WB
+</PRE></LI></OL>
+        <LI>anti-dependency - WAR - write after read (or read gets wrong new 
+        value); won't occur in scalar pipeline if all reads in ID 
+        <P></P>
+        <LI>output dependency - WAW - write after write (or correct value 
+        overwritten); won't occur in scalar pipeline if all writes in WB 
+</LI></OL>
+      <P></P>
+      <LI>control hazards - due to timing conflicts in changing instruction 
+      sequence 
+      <P>
+      <OL type=a>
+        <LI>branches appear about every five insts., and a control flow change 
+        occurs about every ten 
+        <OL type=i>
+          <LI><CITE>update these to 3rd. ed.</CITE> 
+          <LI>10% of insts. are untaken conditional branches (SPECint92 
+          frequencies for DLX) 
+          <LI>6% of insts. are taken conditional branches 
+          <LI>4% of insts. are (taken) unconditional branches, calls, returns 
+          </LI></OL>
+        <P></P>
+        <LI>waiting for conditional branches to execute typically not done, too 
+        slow <PRE>                                          branch CPI = 5 (taken or untaken)
+  a:   br t   IF  ID  EX  DC  WB
+  t:              --  --  --  --  IF  ID  EX  DC  WB
+</PRE>
+        <LI>predict untaken, advantage is that it uses the normally-updated PC <PRE>  a:   br t   IF  ID  EX  DC  WB.         untaken branch CPI = 1
+  a+4:            IF  ID  EX  DC|           taken branch CPI = 5 (or less if
+  a+8:                IF  ID  EX|                                you accelerate
+  a+12:                   IF  ID|                                BTA calc. and
+  a+16:                       IF|                                decision)
+                                v
+  t:                              IF  ID  EX  DC  WB
+</PRE>
+        <LI>delayed branch 
+        <OL type=i>
+          <LI>accelerate decision (taken/untaken) - perform simple comparison 
+          (such as compare to 0) in earlier pipe stage (e.g., ID) 
+          <LI>accelerate BTA calculation - use extra address adder to determine 
+          BTA in earlier pipe stage (e.g., ID) </LI></OL><PRE>  a:   br t   IF  ID. EX  DC  WB          branch CPI = 1 (taken or untaken)
+  a+4:            IF| ID  EX  DC  WB      delay slot inst. always executed
+                    v
+  t:                  IF  ID  EX  DC  WB
+</PRE>
+        <LI>changes to ISA to reduce effect of branches 
+        <OL type=i>
+          <LI>delayed branches (possibly with annulling) 
+          <LI>conditional moves (sometimes called partial predication) 
+          <LI>full instruction set predication (e.g., IA-64) 
+          <LI>prepare to branch / multiway branch with just one change in PC 
+          </LI></OL>
+        <P></P>
+        <LI><A href="http://www.cs.clemson.edu/~mark/464/branching2.txt">branch 
+        prediction</A> </LI></OL></LI></OL>
+    <P></P>
+    <LI>instruction scheduling by compiler 
+    <OL>
+      <LI>scheduling for multi-cycle operations (e.g., load-use), interacts with 
+      register allocation (increases live ranges and thus increases register 
+      pressure) 
+      <LI>scheduling of branch delay slots - independent inst. from before 
+      branch, benign inst. from taken or untaken path, or nop 
+      <LI>compiler branch elimination 
+      <OL type=a>
+        <LI>if-conversion - change code to use predication or conditional moves 
+        <LI>unrolling loops 
+        <LI>hand-crafted code (e.g., anding results with all-0 or all-1 masks) 
+        <LI>superoptimizer - near-exhaustive searches for equivalent but 
+        branchless code segments (e.g., <A 
+        href="http://www.hpl.hp.com/techreports/Compaq-DEC/SRC-RR-171.html">Denali</A>, 
+        also see <A 
+        href="http://portal.acm.org/citation.cfm?id=36206.36194">Massalin's 
+        original paper</A> and <A 
+        href="http://portal.acm.org/citation.cfm?id=143146">Granlund and 
+        Kenner's paper</A>) </LI></OL>
+      <LI>different optimizations required for different family members, e.g., 
+      FP code on the FP-stack-based x86: 
+      <OL type=a>
+        <LI>486 - avoid an excessive number of FXCH instructions since they 
+        require execution by the FPU and thus reduce the FP performance 
+        <LI>classic Pentium - FXCH instructions can be strategically paired with 
+        other instructions to improve performance 
+        <LI>Pentium II/III (P6 core) - FXCHs are essentially free (they are 
+        handled by the register renaming hardware) 
+        <LI>Pentium 4 - avoid FXCHs since they consume slots in the trace cache 
+        and there are also issue slot restrictions (use SSE2 instructions 
+        instead where possible) </LI></OL>
+      <LI>basic block scheduling (one entry, one exit) <A 
+      href="http://www.cs.clemson.edu/~mark/464/alpha_is.txt">(see example)</A> 
+      <LI>global scheduling - across branches 
+      <LI>superblock / hyperblock scheduling (one entry, multiple exits) 
+</LI></OL>
+    <P></P>
+    <LI>interrupt/faults/exceptions complicate pipeline design 
+    <P>
+    <OL>
+      <LI>an external interrupt can occur between instructions 
+      <OL type=a>
+        <LI>immediately flush instructions in pipe (e.g., disable WB) or let 
+        pipe drain <PRE>                    !
+  IF  ID  EX  DC  WB|
+      IF  ID  EX  DC|flush   &lt;-- save this address to resume
+          IF  ID  EX|flush
+              IF  ID|flush
+                  IF|flush
+                    v
+                     TRAP ID  EX  DC  WB
+                          IF  ID  EX  DC  WB        instructions
+                              IF  ID  EX  DC  WB    from handler
+or
+                    !
+  IF  ID  EX  DC  WB|
+      IF  ID  EX  DC| WB              \
+          IF  ID  EX| DC  WB           | but what happens to exceptions
+              IF  ID| EX  DC  WB       | that occur in these instructions?
+                  IF| ID  EX  DC  WB  /
+                    v                 &lt;-- save normal next IF address to resume
+                     TRAP ID  EX  DC  WB
+                          IF  ID  EX  DC  WB          instructions
+                              IF  ID  EX  DC  WB    from handler
+</PRE>
+        <LI>run handler (perhaps by inserting trap instruction into the pipe at 
+        IF) 
+        <LI>restart the interrupted instruction sequence </LI></OL>
+      <P></P>
+      <LI>to support an interrupt between a delayed branch and the delay slot 
+      instruction, you must keep multiple PCs <PRE>  x:   delayed branch to y  &lt;-- interrupt after this
+  x+4: delay slot
+  y:   target instruction
+
+  sequence w/o interrupt:   x, x+4, y, y+4, ...
+
+  sequence after interrupt:    x+4, y, y+4, ...
+    (but x+4 is not the branch to y!)
+
+  so must save PC = x+4 and NPC = y
+</PRE>
+      <LI>a fault/exception can occur within an instruction 
+      <OL type=a>
+        <LI>let prior instructions finish 
+        <LI>flush faulting instruction and subsequent ones from pipe 
+        <LI>restore any changed registers (e.g., page fault after autoincrement) 
+
+        <LI>run handler (perhaps by inserting trap instruction into the pipe) 
+        <LI>restart the faulting instruction and subsequent ones </LI></OL>
+      <P></P>
+      <LI>for longer-running instructions such as string move 
+      <OL type=a>
+        <LI>ISA specifies use of registers for count, source address, and 
+        destination address 
+        <LI>leave registers as-is upon occurrence of interrupt/fault/exception 
+        <LI>after handler runs, use "continue" rather than "restart" actions 
+        </LI></OL>
+      <P></P>
+      <LI>out-of-order interrupts (e.g., inst. page fault in inst. i+1 seen 
+      before data page fault in inst. i) 
+      <OL type=a>
+        <LI>soln. 1: handle upon occurrence, restart all insts. that were in in 
+        the pipe at that time - disadvantage is that interrupts are not handled 
+        as in sequential machine <PRE>  IF  ID  EX [DC] ..             &lt;-- data page fault
+     [IF] ..  ..| ..  ..         &lt;-- inst page fault
+        v       |
+         TRAP ID| EX  DC  WB     &lt;-- start inst page fault handler
+              IF| ID  EX  DC  WB
+                v
+                ?TRAP?           &lt;-- start data page fault handler?
+                                     (or wait until after inst page
+                                      fault handler completes?)
+</PRE>
+        <LI>soln. 2: status vector per instruction, set by faulting stage, 
+        inspected in WB - disadvantage is extra latency for inst. to get to WB 
+        stage, advantage is in-order handling <PRE>  IF  ID  EX [DC] ..                 &lt;-- data page fault, seen in WB
+     [IF] ..  ..| ..  ..             &lt;-- inst page fault, ignored b/c WB disabled
+         [IF] ..| ..  ..  ..         &lt;-- ignored because WB disabled
+             [IF| ..  ..  ..  ..     &lt;-- ignored because WB disabled
+                v
+                 TRAP ID  EX  DC  WB &lt;-- start data page fault handler
+
+  after handler runs, resume with inst. that caused data page fault
+</PRE></LI></OL>
+      <LI>the frequent case should be fast, but the rare case MUST BE CORRECT 
+      </LI></OL></LI></OL>
+  <P></P>
+  <LI>Multiple-cycle instructions (e.g., integer multiply, floating point) 
+  complicate pipeline design 
+  <P>
+  <OL type=A>
+    <LI>soln. 1: eliminate them (e.g., SPARC version 7 IU had no integer 
+    multiply or divide) 
+    <P></P>
+    <LI>soln. 2: stall pipeline while instruction spends multiple cycles in EX <PRE>    IF|ID|EX|DC|WB
+
+  IF  ID  E1  E2  E3  DC  WB                // fp
+      IF  ID  --  --  EX  DC  WB            // int
+          IF  --  --  ID  EX  DC  WB        // int
+                      IF  ID  EX  DC  WB    // ld/st
+</PRE>
+    <LI>soln. 3: split pipeline into multiple fixed-length segments (guarantee 
+    in-order WB) 
+    <OL>
+      <LI>segments must be fully pipelined to avoid structural hazards 
+      <LI>implies empty stages, but advantage is in-order completion 
+      (UltraSPARC) 
+      <LI>complicates forwarding (many more paths) </LI></OL><PRE>         |EX|~~|~~|WB  (single-cycle integer)
+    IF|ID|AC|DC|~~|WB  (load/stores)
+         |E1|E2|E3|WB  (fp and multi-cycle integer)
+
+
+  IF  ID  E1  E2  E3  WB                // fp
+      IF  ID  EX  ~~  ~~  WB            // int
+          IF  ID  EX  ~~  ~~  WB        // int
+              IF  ID  AC  DC  ~~  WB    // ld/st
+</PRE>
+    <LI>soln. 4: split pipeline into multiple variable-length segments 
+    <OL>
+      <LI>must deal with possible simultaneous WB from multiple segments 
+      <OL type=a>
+        <LI>soln. a: reservation scheduling in ID - reserve a WB slot in a 
+        reservation vector or table or stall until an available slot can be 
+        obtained 
+        <LI>soln. b: arbitrate among the segments for use of the WB bus(es), 
+        perhaps stalling some segments </LI></OL>
+      <LI>out-of-order completion =&gt; can lead to imprecise exceptions (esp. 
+      FP) 
+      <LI>must deal with out-of-order writes to same register (e.g., you can 
+      stall or squash a tardy write) </LI></OL><PRE>         |EX|WB        (single-cycle integer)
+    IF|ID|AC|DC|WB     (load/stores)
+         |E1|E2|E3|WB  (fp and multi-cycle integer)
+
+  IF  ID  E1  E2  E3  WB
+      IF  ID  EX  WB          &lt;-- out-of-order completion
+          IF  ID  EX  WB      &lt;-- competition for WB port / resource conflict?
+              IF  ID  AC  DC  WB
+</PRE></LI></OL>
+  <P></P>
+  <LI>Precise exceptions for out-of-order completion (esp. important for FP) 
+  <P>
+  <OL type=A>
+    <LI>soln. 0: allow imprecise FP exceptions (IBM S/360 M91) <PRE>         |EX|WB
+    IF|ID|E1|E2|E3|WB
+         |X1|X2|X3|X4|X5|WB
+
+              exception in b
+                           V
+  a: IF  ID  X1  X2  X3  X4|     &lt;-- not completed!
+  b:     IF  ID  E1  E2  E3|     &lt;-- resume here or where after handler?
+  c:         IF  ID  EX  WB|     &lt;-- completed!
+  d:             IF  ID  EX| ..  ..
+  e:                 IF  ID| ..  ..  ..
+  f:                     IF| ..  ..  ..  ..
+                           v
+                            TRAP
+
+  consider if inst c overwrites a source, e.g., ADDI R1,R1,#1
+</PRE>
+    <LI>soln. 1: provide run-slow mode that will force in-order FP completion 
+    (IBM RS/6000) <PRE>  a: IF  ID  X1  X2  X3  X4  X5  WB
+  b:     IF  ID  --  --  --  --  --  E1  E2  E3.  &lt;-- resume here
+  c:         IF  --  --  --  --  --  ID  --  --|
+  d:                                 IF  --  --|
+                                               v
+                                                TRAP
+</PRE>
+    <LI>soln. 2: provide exception barrier insts. to force machine to wait until 
+    all possible points of exceptions have been passed (DEC Alpha; compiler opt. 
+    can reduce barriers to one per basic block) <PRE>  b:         IF  ID  E1  E2  E3.   &lt;-- resume here
+  barrier        IF  ID  --  --|
+  c:                 IF  --  --|   &lt;-- never executed
+                               v
+                                TRAP
+</PRE>
+    <LI>soln. 3: provide precise FP exceptions using combined hardware/software 
+    buffer scheme; FP exception occurs and is queued; recognized later upon 
+    inst. issue to FPU; exception handler must fix up and/or simulate faulting 
+    inst. (Intel 486 delayed exception, SPARC FPQ) <PRE>  b:     IF  ID  E1  E2  E3* ..    &lt;-- queued exception
+  c:         IF  ID  EX  WB
+  d:             IF  ID  EX  WB
+  e:                 IF  ID  E1.   &lt;-- earlier exception recognized =&gt;
+  f:                     IF  ID|        handle and restart here at e
+  g:                         IF|
+                               v
+                                TRAP
+</PRE>
+    <LI>soln. 4: provide precise FP exceptions using overlapped execution only 
+    when FP insts. are guaranteed to be without exceptions (MIPS R2000, Intel 
+    Pentium SIR/safe instruction recognition) <PRE>  b:     IF  ID  E1  E2  E3.   &lt;-- resume here
+  c:             IF  --  --|   &lt;-- never executed
+                           v
+                            TRAP
+</PRE>
+    <LI>soln. 5: provide precise exceptions by saving previous contents of 
+    destination registers into a history buffer; roll back upon exception 
+    (MC88110) <PRE>  a: IF  ID  X1  X2  X3  X4  X5  WB      &lt;-- allow to drain
+  b:     IF  ID  E1  E2  E3.             &lt;-- resume here
+  c:         IF  ID  EX  WB| RB          &lt;-- roll back dest reg to previous value
+  d:             IF  ID  EX| ..  ..      &lt;-- flushed
+  e:                 IF  ID| ..  ..  ..
+  f:                     IF| ..  ..  ..  ..
+                           v
+                            TRAP
+</PRE>
+    <LI>soln. 6: provide precise exceptions by writing results from out-of-order 
+    completion into a reorder buffer and then examining exception status on 
+    sequential retirement of results from buffer into registers (PowerPC 
+    603/604/750, Intel P6 core, MIPS R10000, etc.) <PRE>  a: IF  ID  X1  X2  X3  X4  X5  WB  RT  &lt;-- retires from buffer to reg file
+  b:     IF  ID  E1  E2  E3.             &lt;-- resume here
+  c:         IF  ID  EX  WB| ..          &lt;-- completes but doesn't retire
+  d:             IF  ID  EX| ..  ..      &lt;-- flushed
+  e:                 IF  ID| ..  ..  ..
+  f:                     IF| ..  ..  ..  ..
+                           v
+                            TRAP
+</PRE>
+    <LI>soln. 7: provide precise exceptions by writing results from out-of-order 
+    completion into a future file using age bits to eliminate tardy writes 
+    (UltraSPARC III, US Patent 5,964,862) </LI></OL>
+  <P></P>
+  <LI>Case study: MIPS R2000 (1989) 
+  <OL type=A>
+    <LI>five-stage integer pipeline 
+    <OL>
+      <LI>IF - translate PC into physical address in first clock phase, and 
+      start fetch from icache in second phase 
+      <LI>RD - finish fetch from icache in first clock phase, and decode and 
+      read register operands (fixed-field decoding) in second phase; for branch 
+      determine next PC in second phase 
+      <LI>ALU - execute ALU instruction; for ld/st determine effective address 
+      in first phase, and translate effective address into physical address in 
+      second phase 
+      <LI>DC - access dcache 
+      <LI>WB - in first phase (note how write-back occurs in first phase of WB 
+      and register read occurs in second phase of RD - this obviates a 
+      forwarding path from WB to RD) </LI></OL>
+    <LI>delayed branches (note how branch target address is available at end of 
+    RD), this is a case where the pipelined implementation "shows through" the 
+    architecture 
+    <LI>3-ported register file (2 read, 1 write) 
+    <LI>chip architects were Craig Hansen, John Moussouris, Tom Riordan, and 
+    Chris Rowen (MIPS-I architect was Craig Hansen) 
+    <LI>separate FPU chip (R2010) - Craig Hansen, Ed Hudson, Mark Johnson, and 
+    others 
+    <LI>J. Moussouris, et al., "A CMOS RISC processor with integrated system 
+    function," IEEE COMPCON Spring '86, San Francisco, March 1986, pp. 126-131. 
+    <LI>(see <A href="http://www.cs.clemson.edu/~mark/R4300i.pdf">MIPS R4300i 
+    datasheet (pdf)</A> for an even cleaner presentation of the five-stage 
+    pipeline) </LI></OL>
+  <P></P>
+  <LI>Case study: MIPS R4000/R4400 (1991) 
+  <OL type=A>
+    <LI>"superpipelined" eight-stage pipeline - see section A.6 in text 
+    <LI>branch delay is three cycles, so taken branch has delay slot cycle plus 
+    two stall cycles (example of the architecture lasting longer than an 
+    implementation) 
+    <LI>note speculative use of data prior to cache tag check (i.e., 
+    direct-mapped dcache) 
+    <LI>chip architects were Peter Davies, Earl Killian, and Tom Riordan 
+    <LI>A. Bashteen, I. Lui, and J. Mullan, "A superpipeline approach to the 
+    MIPS architecture," IEEE COMPCON Spring '91, San Francisco, 1991, pp. 8-12. 
+    <LI>S. Mirapuri, M. Woodacre, and N. Vasseghi, "The MIPS R4000 processor," 
+    IEEE Micro, 12, 2, April 1992, pp. 10-22. 
+    <LI>other R4x00 family members (R4200/R4600) go back to simpler 5-stage 
+    pipeline </LI></OL>
+  <P></P>
+  <LI>Case study: Fujitsu TurboSPARC (1996) 
+  <OL type=A>
+    <LI>early SPARCs had four-stage pipelines 
+    <LI>TurboSPARC has nine-stage combined integer/FP pipeline 
+    <OL>
+      <LI>I - inst. address given to virtually-indexed/virtually-tagged 
+      direct-mapped 16 KB icache 
+      <LI>F - fetch instruction pair, also buffers an instruction pair at branch 
+      target address 
+      <LI>D - decode single instruction and read two registers; compute branch 
+      target address; perform FP structural and data hazard detection for the 
+      three nonpipelined FP units (FALU, FMUL, FDIV), including avoidance of 
+      simultaneous FP writebacks 
+      <LI>E - integer execute, most are single-cycle but integer multiply/divide 
+      stalls the pipeline 
+      <LI>M - memory access to virtually-indexed/physically-tagged direct-mapped 
+      16 KB dcache 
+      <LI>R - register-defer stage - to cancel writes to integer register file 
+      <LI>W - write-back to integer register file and issue any pending traps, 
+      long-running (25-cycle) FP div or sqrt instructions are placed in a 
+      special holding buffer 
+      <LI>FR - FP-defer stage - normal 3-cycle FP insts. complete, if no 
+      exceptions in this or prior FP instructions route result to FP register 
+      file, else route info to FPQ 
+      <LI>FW - FP-write-back - write FP register or FPQ with posted results and 
+      set FP condition code </LI></OL>
+    <LI>delayed branches 
+    <LI>4-ported register file (3 read, 1 write) </LI></OL>
+  <P></P>
+  <LI>Case study: Intel i486 (1989) 
+  <OL type=A>
+    <LI>five-stage integer pipeline (approach is called an AGI pipeline) 
+    <OL>
+      <LI>fetch - fetch 16 bytes of instructions from the single 
+      physically-addressed 4-way set associative 8KB cache into a prefetch 
+      buffer (providing about five instructions per fetch); use the two 16-byte 
+      buffers in a double buffered manner or use one for prefetching down a 
+      branch target path 
+      <LI>D1 (main decoding stage) - processes up to three instruction bytes at 
+      a time; determines the length of the instruction and causes the prefetch 
+      buffer to step to the next instruction; extra cycles for prefix bytes or 
+      two-byte opcodes 
+      <LI>D2 (secondary decoding stage) - includes effective address 
+      calculation; extra cycles when inst. has both an immediate constant and a 
+      memory displacement or when an index register must be added to a base 
+      register and a displacement 
+      <LI>EX (execution) - includes register operand fetch and data cache access 
+
+      <OL type=a>
+        <LI>data cache hit for either a load or store operation (i.e., MOV mem 
+        to reg, MOV reg to mem) can be accomplished by the EX stage in one cycle 
+
+        <LI>alu operations with all operands/results in registers can be 
+        performed in one cycle 
+        <LI>extra cycles required for complex instructions, e.g. reg-to-memory 
+        add requires three EX cycles: one for data fetch from cache, one for the 
+        add itself, and one for result store to cache -- this type of 
+        instruction is common in x86-style code 
+        <LI>using forwarding, a loaded result is available for use in the very 
+        next cycle; however, because address calculation occurs in a previous 
+        stage (D2), there can be pointer load delays (that is, a sequence of a 
+        load and then an instruction that uses the loaded register as a base or 
+        index register will encounter a one-cycle stall) </LI></OL>
+      <LI>WB - write back to registers </LI></OL>
+    <LI>branches 
+    <OL>
+      <LI>predict-untaken (even for unconditional jumps) 
+      <LI>two-cycle mispredict penalty since change in the PC (caused by a taken 
+      conditional jump or an unconditional jump) is determined during the EX 
+      stage; contents of D1 and D2 must be flushed </LI></OL>
+    <LI>4-ported register file (3 read, 1 write) 
+    <LI>eight-stage FP pipeline with integer stages fetch/D1/D2/EX followed by 
+    FP stages X1 (execute-1), X2 (exexute-2), WF (FP write-back), and ER (error 
+    reporting) 
+    <LI>chief designer was John Crawford (IA-32 architects were John Crawford 
+    and Patrick Gelsinger) 
+    <LI>J. Crawford, "The i486 CPU: Executing Instructions in One Clock Cycle," 
+    IEEE Micro, February 1990, pp. 27-36. 
+    <LI>B. Fu, A. Saini, and P. Gelsinger, "Performance and Microarchitecture of 
+    the i486 Microprocessor," Intl. Conf. Computer Design, 1989, pp. 182-187. 
+    <LI>E. Grochowski and K. Shoemaker, "Issues in the Implementation of the 
+    i486 Cache and Bus," Intl. Conf. Computer Design, 1989, pp. 193-198. 
+</LI></OL>
+  <P></P>
+  <LI>Case study: IBM z900 (2002) 
+  <OL type=A>
+    <LI>seven-stage pipeline (optimized for RX format instructions Reg &lt;- Reg 
+    op M[B+X+D]) 
+    <OL>
+      <LI>fetch (may take several cycles) 
+      <LI>decode 
+      <LI>read base and index registers, generate address 
+      <LI>cache stage 1 
+      <LI>cache stage 2 
+      <LI>execute 
+      <LI>write back </LI></OL>
+    <LI>dual 256 KB L1 caches 
+    <LI>8K-entry BTB, keeps only taken branches 
+    <LI>fetch buffers to predict through three branches 
+    <LI>I-unit resolves load, load address, and branch on index instructions 
+    early 
+    <LI>E-unit has integer ("fixed-point") and floating-point units 
+    <LI><A href="http://www.research.ibm.com/journal/rd/464/schwarz.html">E. 
+    Schwarz, et al., "The microarchitecture of the IBM eServer z900 processor," 
+    IBM Jrnl. Res. Dev., 46, 4/5, 2002, pp. 381-396. </LI></OL></LI></OL>
+<P>
+<HR>
+
+<P><A href="http://www.cs.clemson.edu/~mark/464.html">[Course home page]</A> <A 
+href="http://www.cs.clemson.edu/~mark/homepage.html">[Mark's homepage]</A> <A 
+href="http://www.cs.clemson.edu/">[CPSC homepage]</A> <A 
+href="http://www.clemson.edu/">[Clemson Univ. homepage]</A> 
+<P><I>mark@cs.clemson.edu </I></P></BODY></HTML>

@@ -1,0 +1,26 @@
+q 1 
+
+There is data stream of n elements, we need to select k element set out of that. so that each element is having equal propability of being in the set.
+
+q 2
+There is a set of n elements and we need to say whether there exist a subset which is having the sum of elements k.
+
+q 3
+epected number of writes in finding the minimum of array
+
+q 4
+Train boarding problem
+
+q 5
+Quad tree- right boundary node problem
+
+q 6
+Finding longest path sequence, such that successive box can be put in former one.
+
+q 7
+Histogram, finding the maximum area rectangle problem
+
+
+q 8
+Open problem to find the best map out of maps.
+

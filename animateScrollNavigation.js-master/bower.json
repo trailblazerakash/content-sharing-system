@@ -1,0 +1,27 @@
+{
+  "name": "animatescroll-navigation",
+  "description": "Single page navigation jQuery using AnimateScroll",
+  "main": "dist/animate_scroll_navigation.js",
+  "keywords": ["navigation", "singlepage", "scroll"],
+  "homepage": "https://github.com/wasilak/animateScrollNavigation.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wasilak/animateScrollNavigation.js.git"
+  },
+  "license": "MIT",
+  "authors": [
+    "Piotr Wasilewski", "Piotr Wasilewski <piotr.m.wasilewski@gmail.com>"
+  ],
+  "ignore": [
+    ".gitignore",
+    ".jshintrc",
+    "Gruntfile.js",
+    "package.json",
+    "bower_components"
+  ],
+  "dependencies": {
+    "jquery": ">=1.5",
+    "animatescroll": "~1.0.7"
+  },
+  "devDependencies": {}
+}

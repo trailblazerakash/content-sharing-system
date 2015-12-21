@@ -1,0 +1,21 @@
+q.1
+	Stream of words is given, we need to print less than equal to k consecutive words from each word.
+
+q.2
+	Two sorted array, one is huge(cant fit in memory) , we have to insert the smaller array in the larger one, which has enough space. no extra space!
+
+q.3
+	stream of sorted numbers, n is not known, we need to find the median, with constant storage.(we cant tell excat, so approximate and bound the error)
+
+q.4
+	Some denominations have given, we need to find the change of N, with minimum of coins.
+
+q.5
+	N machines, each machine has k numbers, you have to sort all these numbers (you can exchange the numbers between machines), As output you have to produced an order of machines.(so the numbers of the machine leadings should be smaller then the numbers of the successive machines in order.)
+	(Without using any centralised machine, or extra space).
+
+q.6
+	Given N, factorize N!. (solution should be o(nlogn), extra space can be used)
+
+q.7
+	

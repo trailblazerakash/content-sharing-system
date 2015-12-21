@@ -1,0 +1,48 @@
+BODY {
+	FONT-SIZE: 10pt; FONT-FAMILY: Verdana, Arial, Helvetica
+}
+H1 {
+	FONT-WEIGHT: bold; FONT-SIZE: 18pt; FONT-STYLE: italic; FONT-FAMILY: "Times New Roman", Times
+}
+H2 {
+	MARGIN-TOP: 18pt; FONT-WEIGHT: bold; FONT-SIZE: 12pt; MARGIN-LEFT: 8px; COLOR: #fc0; FONT-STYLE: italic; FONT-FAMILY: Arial, Helvetica
+}
+H3 {
+	MARGIN-TOP: 14pt; FONT-WEIGHT: bold; FONT-SIZE: 10pt; MARGIN-LEFT: 8px; FONT-STYLE: italic; FONT-FAMILY: Arial, Helvetica
+}
+P {
+	FONT-SIZE: 10pt; MARGIN-LEFT: 25px; MARGIN-RIGHT: 5px; FONT-FAMILY: Verdana, Arial, Helvetica
+}
+OL {
+	FONT-SIZE: 10pt; FONT-FAMILY: Verdana, Arial, Helvetica
+}
+UL {
+	FONT-SIZE: 10pt; FONT-FAMILY: Verdana, Arial, Helvetica
+}
+LI {
+	MARGIN-TOP: 5pt; FONT-SIZE: 10pt; MARGIN-LEFT: 25px; MARGIN-RIGHT: 5px; FONT-FAMILY: Verdana, Arial, Helvetica
+}
+DL {
+	MARGIN-TOP: 4pt; FONT-SIZE: 10pt; MARGIN-LEFT: 25px; MARGIN-RIGHT: 5px; FONT-FAMILY: Verdana, Arial, Helvetica
+}
+DT {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; FONT-FAMILY: Verdana, Arial, Helvetica
+}
+TD {
+	FONT-SIZE: 10pt; FONT-FAMILY: Verdana, Arial, Helvetica
+}
+PRE {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; MARGIN-LEFT: 100px; MARGIN-RIGHT: 5px; FONT-FAMILY: "Courier New", Courier
+}
+TT {
+	FONT-WEIGHT: bold; FONT-FAMILY: "Courier New", Courier
+}
+A {
+	FONT-WEIGHT: bold; TEXT-DECORATION: none
+}
+A:hover {
+	FONT-WEIGHT: bold; COLOR: #9f3; TEXT-DECORATION: underline
+}
+.b {
+	FONT-WEIGHT: bold; COLOR: #fc0
+}
